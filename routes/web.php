@@ -15,7 +15,12 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', [AuthController::class, 'index'])->name('login');
+Route::get('/', [AuthController::class, 'index']);
+Route::get('/login', [AuthController::class, 'index']);
+
+Route::get('/registration', [AuthController::class, 'registration']);
+Route::post('/registration', [AuthController::class, 'createRegistration']);
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
