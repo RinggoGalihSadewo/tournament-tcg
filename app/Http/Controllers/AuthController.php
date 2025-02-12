@@ -37,17 +37,15 @@ class AuthController extends Controller
                 if ($data->is_admin) {
                     $request->session()->regenerate();
 
-                    $request->session()->put('user', Auth::user());
-
                     return response()->json([
                         'message'   => 'Berhasil Login!',
                         'status'    => 200,
-                        'redirect'  => url('/login')
+                        'redirect'  => url('/admin/tcg')
                     ]);
                 }
                 return response()->json([
-                    'message'   => 'Anda bukan Admin!',
-                    'status'    => 401,
+                    'message'   => 'Berhasil Login!',
+                    'status'    => 200,
                     'redirect'  => url('/')
                 ]);
             } else {

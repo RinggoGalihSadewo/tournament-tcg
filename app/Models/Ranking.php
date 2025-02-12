@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ranking extends Model 
 {
     protected $table = 'ranking';
+    protected $primaryKey = 'id_ranking';
 
     protected $guarded = [
         'id_ranking'

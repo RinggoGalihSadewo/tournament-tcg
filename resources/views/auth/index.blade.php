@@ -1,6 +1,6 @@
 @extends('layout.auth.master')
 
-@section('title', 'Login | PT Global Talentlytica Indonesia')
+@section('title', 'Login | Tournament TCG')
 
 @section('content')
 

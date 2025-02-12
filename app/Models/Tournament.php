@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tournament extends Model 
 {
     protected $table = 'tournament';
+    protected $primaryKey = 'id_tournament';
 
     protected $guarded = [
         'id_tournament'

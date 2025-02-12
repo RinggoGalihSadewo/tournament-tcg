@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Decklog extends Model 
 {
     protected $table = 'decklog';
+    protected $primaryKey = 'id_decklog';
 
     protected $guarded = [
         'id_decklog'

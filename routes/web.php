@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\TcgController;
 use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', [AuthController::class, 'index']);
+Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::get('/login', [AuthController::class, 'index']);
 
 Route::get('/registration', [AuthController::class, 'registration']);
@@ -24,11 +24,6 @@ Route::post('/registration', [AuthController::class, 'createRegistration']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::middleware('auth')->group(function () {
-    Route::resource('/data-peserta', PesertaController::class);
-    Route::post('/data-peserta/get-data-users', [PesertaController::class, 'get_data_users']);
-
-    Route::resource('/data-admin', AdminController::class);
-    Route::get('/data-admin/{type}/{id}', [AdminController::class, 'show']);
-    Route::post('/data-admin/get-data-admin', [AdminController::class, 'get_data_admin']);
+Route::middleware('web')->prefix('admin')->group(function () {
+    Route::resource('/tcg', TcgController::class);
 });

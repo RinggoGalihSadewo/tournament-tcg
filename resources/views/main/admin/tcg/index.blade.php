@@ -1,11 +1,11 @@
 @extends('layout.main.master')
 
-@section('title', 'Data Admin | Tournament TCG')
+@section('title', 'Data TCG | Tournament TCG')
 
 @section('content')
 
 <div class="d-flex justify-content-between">
-    <h2 class="mb-2 page-title">Data Admin</h2>
+    <h2 class="mb-2 page-title">Data TCG</h2>
     <button type="button" class="btn mb-2 btn-primary" data-toggle="modal" data-target="#modalAdmin" id="btnModalTambahAdmin">Tambah Data</button>
     <!-- Modal -->
     <div class="modal fade" id="modalAdmin" tabindex="-1" role="dialog" aria-labelledby="modalAdminLabel" aria-hidden="true">
@@ -27,24 +27,9 @@
                 </div>
                 <div class="form-group">
                     <div id="userId"></div>
-                    <label for="name">Nama</label>
+                    <label for="name">Nama TCG</label>
                     <input type="text" id="name" class="form-control" name="name" value="" required="" autofocus="" placeholder="Nama">
                     <div class="invalid-feedback name"></div>
-                  </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" id="email" class="form-control" name="email" value="" placeholder="Email">
-                  <div class="invalid-feedback email"></div>
-                </div>
-                <div class="form-group">
-                  <label for="password">Password Baru</label>
-                  <input type="password" id="password" class="form-control" name="password" value="" placeholder="Password">
-                  <div class="invalid-feedback password"></div>
-                </div>
-                <div class="form-group">
-                  <label for="passwordConfirm">Konfirmasi Password Baru</label>
-                  <input type="password" id="passwordConfirm" class="form-control" name="passwordConfirm" value="" placeholder="Password Baru">
-                  <div class="invalid-feedback passwordConfirm"></div>
                 </div>
               </form>
           </div>
@@ -66,9 +51,9 @@
           <thead>
             <tr>
               <th class="text-dark">#</th>
-              <th class="text-dark">Nama</th>
-              <th class="text-dark">Email</th>
-              <th class="text-dark">Aksi</th>
+              <th class="text-dark">Name</th>
+              <th class="text-dark">Logo</th>
+              <th class="text-dark">Action</th>
             </tr>
           </thead>
           <tbody>

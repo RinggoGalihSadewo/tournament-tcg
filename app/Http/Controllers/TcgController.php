@@ -7,12 +7,12 @@ use App\Models\User;
 use App\Models\Grade;
 use Illuminate\Support\Str;
 
-class PesertaController extends Controller
+class TcgController extends Controller
 {
 
     public function index()
     {
-        return view('main.peserta.index');
+        return view('main.admin.tcg.index');
     }
 
     public function get_data_users()
