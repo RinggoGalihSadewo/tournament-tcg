@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <div id="userId"></div>
                     <label for="name">Name TCG</label>
-                    <input type="text" id="name" class="form-control" name="name" value="" required="" autofocus="" disabled>
+                    <input type="text" id="name" class="form-control" name="name" value="" required="" autofocus="">
                     <div class="invalid-feedback name"></div>
                 </div>
               </form>
