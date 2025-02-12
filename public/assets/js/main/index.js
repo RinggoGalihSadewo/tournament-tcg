@@ -7,23 +7,39 @@ $.ajaxSetup({
 
 var _token = $('meta[name="csrf-token"]').attr("content");
 
+$("#file").change(function (event) {
+    let reader = new FileReader();
+    reader.onload = function (e) {
+        $("#preview").attr("src", e.target.result).removeClass("d-none");
+    };
+    reader.readAsDataURL(this.files[0]);
+});
+
 // Registration
 $("#btnRegistration").click(() => {
     event.preventDefault();
+
+    const form = $("#form_registration")[0];
+    const data = new FormData(form);
 
     $.ajax({
         url: "/registration",
         type: "POST",
         dataType: "JSON",
-        data: {
-            _token: _token,
-            username: $("#username").val(),
-            name: $("#name").val(),
-            email: $("#email").val(),
-            password: $("#password").val(),
-            phone_number: $("#phone_number").val(),
-            address: $("#address").val(),
-        },
+        enctype: "multipart/form-data",
+        processData: false,
+        contentType: false,
+        cache: false,
+        // data: {
+        //     _token: _token,
+        //     username: $("#username").val(),
+        //     name: $("#name").val(),
+        //     email: $("#email").val(),
+        //     password: $("#password").val(),
+        //     phone_number: $("#phone_number").val(),
+        //     address: $("#address").val(),
+        // },
+        data,
         beforeSend: () => {
             $("#username").removeClass("is-invalid");
             $(".username").empty();

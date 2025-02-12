@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
+use Illuminate\Support\Str;
+
 class AuthController extends Controller
 {
     public function index()
@@ -67,16 +69,16 @@ class AuthController extends Controller
     public function createRegistration(Request $request)
     {
         $request->validate([
-            // 'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
+            'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
             'username'              => ['required'],
             'name'              => ['required'],
             'email'             => ['required', 'email', 'unique:user,email'],
             'password'          => ['required', 'min:8'],
             'phone_number'          => ['required'],
         ], [
-            // 'file.file'                    => 'Foto harus di isi!',
-            // 'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
-            // 'file.max'                     => 'Ukuran Foto maximal 2 MB!',
+            'file.file'                    => 'Foto harus di isi!',
+            'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
+            'file.max'                     => 'Ukuran Foto maximal 2 MB!',
             'username.required'            => 'Username wajib di isi!',
             'name.required'                => 'Name wajib di isi!',
             'email.required'               => 'Email wajib di isi!',

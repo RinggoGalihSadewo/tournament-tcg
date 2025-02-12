@@ -10,18 +10,22 @@
         </a>
       </div>
       <ul class="navbar-nav flex-fill w-100 mb-2">
-        <li class="nav-item dropdown">
-          <a href="#profile" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link {{ (request()->is('data*')) ? 'active_sidebar' : '' }}">
-            <i class="fe fe-user fe-16"></i>
-            <span class="ml-3 item-text">Management Data</span>
-          </a>
-          <ul class="collapse list-unstyled pl-4 w-100 mt-2" id="profile">
-            <a class="nav-link pl-3 {{ (request()->is('admin/tcg*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/tcg') }}"><span class="ml-1">TCG</span></a>
-            <a class="nav-link pl-3 {{ (request()->is('admin/tournament*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/tournament') }}"><span class="ml-1">Tournament</span></a>
-            <a class="nav-link pl-3 {{ (request()->is('admin/participants*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/participants') }}"><span class="ml-1">Tournament Participants</span></a>
-            <a class="nav-link pl-3 {{ (request()->is('admin/report*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/report') }}"><span class="ml-1">Report</span></a>
-          </ul>
+        <li class="nav-item w-100">
+          <a class="nav-link pl-3 {{ (request()->is('admin/tcg*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/tcg') }}">
+            <i class="fe fe-file fe-16"></i><span class="ml-1">TCG</span></a>
+        </li>
+        <li class="nav-item w-100">
+          <a class="nav-link pl-3 {{ (request()->is('admin/tournament*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/tournament') }}"><i class="fe fe-layout fe-16"></i><span class="ml-1">Tournament</span></a>
+
+        </li>
+        <li class="nav-item w-100">
+          <a class="nav-link pl-3 {{ (request()->is('admin/participants*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/participants') }}"><i class="fe fe-users fe-16"></i><span class="ml-1">Tournament Participants</span></a>
+
+        </li>
+        <li class="nav-item w-100">
+          <a class="nav-link pl-3 {{ (request()->is('admin/report*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/report') }}"><i class="fe fe-file-text fe-16"></i><span class="ml-1">Report</span></a>
+
         </li>
       </ul>
-    </nav>
+    </nav>  
 </aside>
