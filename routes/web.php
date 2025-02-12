@@ -26,4 +26,6 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('web')->prefix('admin')->group(function () {
     Route::resource('/tcg', TcgController::class);
+    Route::post('/tcg/get-data-tcg', [TcgController::class, 'get_data_tcg']);
+
 });

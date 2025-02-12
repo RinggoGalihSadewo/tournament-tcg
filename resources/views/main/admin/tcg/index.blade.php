@@ -6,13 +6,13 @@
 
 <div class="d-flex justify-content-between">
     <h2 class="mb-2 page-title">Data TCG</h2>
-    <button type="button" class="btn mb-2 btn-primary" data-toggle="modal" data-target="#modalAdmin" id="btnModalTambahAdmin">Tambah Data</button>
+    <button type="button" class="btn mb-2 btn-primary" data-toggle="modal" data-target="#modalTcg" id="btnModalTambahTcg">Tambah Data</button>
     <!-- Modal -->
-    <div class="modal fade" id="modalAdmin" tabindex="-1" role="dialog" aria-labelledby="modalAdminLabel" aria-hidden="true">
+    <div class="modal fade" id="modalTcg" tabindex="-1" role="dialog" aria-labelledby="modalTcgLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modalAdminLabel"></h5>
+            <h5 class="modal-title" id="modalTcgLabel"></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -27,8 +27,8 @@
                 </div>
                 <div class="form-group">
                     <div id="userId"></div>
-                    <label for="name">Nama TCG</label>
-                    <input type="text" id="name" class="form-control" name="name" value="" required="" autofocus="" placeholder="Nama">
+                    <label for="name">Name TCG</label>
+                    <input type="text" id="name" class="form-control" name="name" value="" required="" autofocus="" disabled>
                     <div class="invalid-feedback name"></div>
                 </div>
               </form>

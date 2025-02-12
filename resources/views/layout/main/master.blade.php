@@ -49,6 +49,8 @@
       </main>
     
     <script src="{{ asset('assets/js/main/index.js') }}"></script>
+    <script src="{{ asset('assets/js/main/tcg.js') }}"></script>
+
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/moment.min.js') }}"></script>
