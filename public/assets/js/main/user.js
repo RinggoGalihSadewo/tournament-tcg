@@ -1,17 +1,18 @@
-// Load Data TCG
+// Load Data Tournament Participant
 $(document).ready(() => {
-    window.location.pathname === "/admin/tcg" && loadDataTCG();
+    window.location.pathname === "/admin/tournament-participants" &&
+        loadDataTournamentParticipant();
 });
 
-// TCG
-loadDataTCG = () => {
+// Tournament Participant
+loadDataTournamentParticipant = () => {
     $("#dataTable-1").DataTable({
         processing: true,
         serverSide: false,
         destroy: true,
         searching: true,
         ajax: {
-            url: "/admin/tcg/get-data-tcg",
+            url: "/admin/tournament-participants/get-data-tournament-participant",
             type: "POST",
             data: {
                 _token: _token,
@@ -23,32 +24,26 @@ loadDataTCG = () => {
                     return meta.row + 1;
                 },
             },
-            { title: "Name", data: "name_tcg" },
+            { title: "Username", data: "registration.username" },
             {
-                title: "Logo",
-                data: "photo_tcg",
-                render: function (data, type, row) {
-                    var imgUrl = data
-                        ? `/assets/img/tcg/${data}` // Hanya gunakan data langsung tanpa menambahkan ".png"
-                        : `/assets/img/no-image.jpg`;
-
-                    return `<img src="${imgUrl}" width="100px" height="100px" style="object-fit: cover"/>`;
-                },
+                title: "Date Registration",
+                data: "registration.date_registration",
             },
+            { title: "Tournament", data: "registration.username" },
             {
                 title: "Aksi",
                 data: null,
                 render: function (data, type, row) {
-                    var id = data.id_tcg;
+                    var id = data.id_user;
 
                     return `
                     <button class="btn btn-sm btn-primary dropdown-toggle more-vertical" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="text-muted sr-only">Action</span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <button class="dropdown-item" onclick="modalEditTcg(${id}, true)">Detail</button>
-                        <button class="dropdown-item" onclick="modalEditTcg(${id}, false)">Edit</button>
-                      <button class="dropdown-item" onclick="hapusTcg(${id})">Hapus</button>
+                        <button class="dropdown-item" onclick="modalEditTournamentParticipant(${id}, true)">Detail</button>
+                        <button class="dropdown-item" onclick="modalEditTournamentParticipant(${id}, false)">Edit</button>
+                      <button class="dropdown-item" onclick="hapusTournamentParticipant(${id})">Hapus</button>
                     </div>
                   `;
                 },
@@ -57,16 +52,16 @@ loadDataTCG = () => {
     });
 };
 
-// Modal Tambah TCG
-$("#btnModalTambahTcg").click(() => {
-    $(".modal-title").html("Create TCG");
+// Modal Tambah TournamentParticipant
+$("#btnModalTambahTournamentParticipant").click(() => {
+    $(".modal-title").html("Create Participant");
 
     $("#result_photos").html(`
-        <img src="/assets/img/no-image.jpg" class="avatar-img img-thumbnail img-fluid" alt="" id="show_photos" width="140px" height="140px">
+        <img src="/assets/img/profile/default.png" class="avatar-img img-thumbnail img-fluid" alt="" id="show_photos" width="140px" height="140px">
     `);
 
     $(".modal-button").html(`
-        <button type="submit" class="btn mb-2 btn-primary" id="btnTambahTcg">Save</button>
+        <button type="submit" class="btn mb-2 btn-primary" id="btnTambahTournamentParticipant">Save</button>
     `);
 
     $("#file").val("");
@@ -79,21 +74,23 @@ $("#btnModalTambahTcg").click(() => {
 });
 
 // Modal Edit
-modalEditTcg = (id, isDetail) => {
+modalEditTournamentParticipant = (id, isDetail) => {
     $.ajax({
-        url: `/admin/tcg/${id}/edit`,
+        url: `/admin/tournament-participants/${id}/edit`,
         type: "GET",
         dataType: "JSON",
         success: (res) => {
             switch (res.status) {
                 case 200:
-                    $("#modalTcg").modal("show");
+                    $("#modalTournamentParticipant").modal("show");
 
-                    let title = isDetail ? "Detail Data TCG" : "Edit Data TCG";
+                    let title = isDetail
+                        ? "Detail Data Tournament Participant"
+                        : "Edit Data Tournament Participant";
                     $(".modal-title").html(title);
 
                     $("#result_photos").html(`
-                        <img src="/assets/img/tcg/${res.data.photo_tcg}" class="avatar-img img-thumbnail img-fluid" alt="" id="show_photos" width="140px" height="140px">
+                        <img src="/assets/img/profile/${res.data.photo}" class="avatar-img img-thumbnail img-fluid" alt="" id="show_photos" width="140px" height="140px">
                     `);
 
                     $("#file")
@@ -102,7 +99,7 @@ modalEditTcg = (id, isDetail) => {
                     $(".file").text("");
 
                     $("#name")
-                        .val(res.data.name_tcg)
+                        .val(res.data.name)
                         .prop("disabled", isDetail)
                         .removeClass("is-invalid");
                     $(".name").text("");
@@ -114,7 +111,7 @@ modalEditTcg = (id, isDetail) => {
                     // Tombol update hanya muncul saat mode edit
                     if (!isDetail) {
                         $(".modal-button").html(`
-                            <button type="submit" class="btn mb-2 btn-primary" id="btnUpdateTcg">Update</button>
+                            <button type="submit" class="btn mb-2 btn-primary" id="btnUpdateTournamentParticipants">Update</button>
                         `);
                     } else {
                         $(".modal-button").html(""); // Kosongkan saat detail
@@ -144,8 +141,8 @@ modalEditTcg = (id, isDetail) => {
     });
 };
 
-// Add Data TCG
-$(document.body).on("click", "#btnTambahTcg", function () {
+// Add Data Tournament Participant
+$(document.body).on("click", "#btnTambahTournamentParticipant", function () {
     event.preventDefault();
 
     var files = $("#file")[0].files;
@@ -154,20 +151,37 @@ $(document.body).on("click", "#btnTambahTcg", function () {
     fd.append("_token", _token);
     fd.append("file", files[0]);
     fd.append("name", $("#name").val());
+    fd.append("username", $("#username").val());
+    fd.append("email", $("#email").val());
+    fd.append("password", $("#password").val());
+    fd.append("phone_number", $("#phone_number").val());
+    fd.append("tournament", $("#tournament").val());
 
     $.ajax({
-        url: "/admin/tcg",
+        url: "/admin/tournament-participants",
         type: "POST",
         dataType: "JSON",
         contentType: false,
         processData: false,
         data: fd,
         beforeSend: () => {
-            $("#file").removeClass("is-invalid");
-            $(".file").empty();
+            $("#username").removeClass("is-invalid");
+            $(".username").empty();
 
             $("#name").removeClass("is-invalid");
             $(".name").empty();
+
+            $("#email").removeClass("is-invalid");
+            $(".email").empty();
+
+            $("#password").removeClass("is-invalid");
+            $(".password").empty();
+
+            $("#phone_number").removeClass("is-invalid");
+            $(".phone_number").empty();
+
+            $("#tournament").removeClass("is-invalid");
+            $(".tournament").empty();
         },
         success: (res) => {
             switch (res.status) {
@@ -179,8 +193,8 @@ $(document.body).on("click", "#btnTambahTcg", function () {
                         showConfirmButton: false,
                         timer: 2000,
                     });
-                    loadDataTCG();
-                    $("#modalTcg").modal("hide");
+                    loadDataTournamentParticipant();
+                    $("#modalTournamentParticipant").modal("hide");
                     $("#form-admin")[0].reset();
                     break;
                 case 401:
@@ -191,7 +205,7 @@ $(document.body).on("click", "#btnTambahTcg", function () {
                         showConfirmButton: false,
                         timer: 2000,
                     });
-                    $("#modalTcg").modal("hide");
+                    $("#modalTournamentParticipant").modal("hide");
                     break;
             }
         },
@@ -208,8 +222,8 @@ $(document.body).on("click", "#btnTambahTcg", function () {
     });
 });
 
-// Update Data TCG
-$(document.body).on("click", "#btnUpdateTcg", function () {
+// Update Data Tournament Participant
+$(document.body).on("click", "#btnUpdateTournamentParticipants", function () {
     event.preventDefault();
 
     var id = $("#id").val();
@@ -221,20 +235,37 @@ $(document.body).on("click", "#btnUpdateTcg", function () {
     fd.append("id", `${id}`);
     fd.append("file", files[0]);
     fd.append("name", $("#name").val());
+    fd.append("username", $("#username").val());
+    fd.append("email", $("#email").val());
+    fd.append("password", $("#password").val());
+    fd.append("phone_number", $("#phone_number").val());
+    fd.append("tournament", $("#tournament").val());
 
     $.ajax({
-        url: `/admin/tcg/${id}`,
+        url: `/admin/tournament-participants/${id}`,
         type: "POST",
         dataType: "JSON",
         processData: false,
         contentType: false,
         data: fd,
         beforeSend: () => {
-            $("#file").removeClass("is-invalid");
-            $(".file").empty();
+            $("#username").removeClass("is-invalid");
+            $(".username").empty();
 
             $("#name").removeClass("is-invalid");
             $(".name").empty();
+
+            $("#email").removeClass("is-invalid");
+            $(".email").empty();
+
+            $("#password").removeClass("is-invalid");
+            $(".password").empty();
+
+            $("#phone_number").removeClass("is-invalid");
+            $(".phone_number").empty();
+
+            $("#tournament").removeClass("is-invalid");
+            $(".tournament").empty();
         },
         success: (res) => {
             switch (res.status) {
@@ -246,8 +277,8 @@ $(document.body).on("click", "#btnUpdateTcg", function () {
                         showConfirmButton: false,
                         timer: 2000,
                     });
-                    loadDataTCG();
-                    $("#modalTcg").modal("hide");
+                    loadDataTournamentParticipant();
+                    $("#modalTournamentParticipant").modal("hide");
                     $("#form-admin")[0].reset();
                     break;
                 case 401:
@@ -258,7 +289,7 @@ $(document.body).on("click", "#btnUpdateTcg", function () {
                         showConfirmButton: false,
                         timer: 2000,
                     });
-                    $("#modalUsers").modal("hide");
+                    $("#modalTournamentParticipant").modal("hide");
                     break;
             }
         },
@@ -275,8 +306,8 @@ $(document.body).on("click", "#btnUpdateTcg", function () {
     });
 });
 
-// Hapus TCG
-hapusTcg = (id) => {
+// Hapus Tournament Participant
+hapusTournamentParticipant = (id) => {
     Swal.fire({
         title: "Apakah anda yakin ingin?",
         text: "Proses ini akan menghapus data secara permanent!",
@@ -288,7 +319,7 @@ hapusTcg = (id) => {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: `/admin/tcg/${id}`,
+                url: `/admin/tournament-participants/${id}`,
                 type: "POST",
                 dataType: "JSON",
                 data: {
@@ -304,7 +335,7 @@ hapusTcg = (id) => {
                         showConfirmButton: false,
                         timer: 2000,
                     });
-                    loadDataTCG();
+                    loadDataTournamentParticipant();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     Swal.fire({

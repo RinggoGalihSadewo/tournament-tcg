@@ -15,13 +15,15 @@
             <i class="fe fe-file fe-16"></i><span class="ml-1">TCG</span></a>
         </li>
         <li class="nav-item w-100">
-          <a class="nav-link pl-3 {{ (request()->is('admin/tournament*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/tournament') }}"><i class="fe fe-layout fe-16"></i><span class="ml-1">Tournament</span></a>
-
-        </li>
-        <li class="nav-item w-100">
-          <a class="nav-link pl-3 {{ (request()->is('admin/participants*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/participants') }}"><i class="fe fe-users fe-16"></i><span class="ml-1">Tournament Participants</span></a>
-
-        </li>
+          <a class="nav-link pl-3 {{ (request()->segment(2) === 'tournament') ? 'active_sidebar' : '' }}" href="{{ url('/admin/tournament') }}">
+              <i class="fe fe-layout fe-16"></i><span class="ml-1">Tournament</span>
+          </a>
+      </li>
+      <li class="nav-item w-100">
+          <a class="nav-link pl-3 {{ (request()->segment(2) === 'tournament-participants') ? 'active_sidebar' : '' }}" href="{{ url('/admin/tournament-participants') }}">
+              <i class="fe fe-users fe-16"></i><span class="ml-1">Tournament Participants</span>
+          </a>
+      </li>
         <li class="nav-item w-100">
           <a class="nav-link pl-3 {{ (request()->is('admin/report*')) ? 'active_sidebar' : '' }}" href="{{ url('/admin/report') }}"><i class="fe fe-file-text fe-16"></i><span class="ml-1">Report</span></a>
 

@@ -15,7 +15,7 @@
           <h2>Registration Account</h2>
         </div>
         <div class="form-group">
-          <img src="{{ asset('assets/img/avatars/default.png') }}" id="preview" alt="Preview" class="img-fluid d-none" style="max-width: 200px;">
+          <img src="{{ asset('assets/img/avatars/default.png') }}" id="preview" alt="Preview" class="img-fluid d-none" style="max-width: 200px; border: 0.1px solid rgb(118, 118, 118); border-radius: 10px;">
         </div>
         <div class="form-group mb-3">
           <div class="custom-file">

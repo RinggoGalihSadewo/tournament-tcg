@@ -1,0 +1,245 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Registration;
+
+class TournamentParticipantController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('main.admin.tournament.participant.index');
+    }
+
+    public function get_data_tournament_participant() 
+    {
+        $data = User::where('is_admin', true)
+                ->whereHas('registration')
+                ->with('registration')
+                ->get();
+
+        return response()->json([
+            'data'      => $data,
+            'status'    => 200
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            // 'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
+            'username'              => ['required'],
+            'name'              => ['required'],
+            'email'             => ['required', 'email', 'unique:user,email'],
+            'password'          => ['required', 'min:8'],
+            'phone_number'          => ['required'],
+            'tournament'          => ['required','exists:tournament,id_tournament'],
+        ], [
+            // 'file.file'                    => 'Foto harus di isi!',
+            // 'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
+            // 'file.max'                     => 'Ukuran Foto maximal 2 MB!',
+            'username.required'            => 'Username wajib di isi!',
+            'name.required'                => 'Name wajib di isi!',
+            'email.required'               => 'Email wajib di isi!',
+            'email.email'                  => 'Email tidak sesuai!',
+            'email.unique'                 => 'Email sudah digunakan!',
+            'password.required'            => 'Password wajib di isi!',
+            'password.min'                 => 'Password minimal 8 karakter!',
+            'phone_number.required'        => 'Phone number wajib di isi!',
+            'tournament.required'          => 'Tournament wajib di isi!',
+            'tournament.exists'            => 'Tournament tidak valid!',
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file_name = 'player-' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('assets/img/profile/'), $file_name);
+        } else {
+            $file_name = 'default.jpg';
+        }
+
+        $user_id = User::insertGetId([
+            'username'      => $request->username,
+            'name'          => $request->name,
+            'email'         => $request->email,
+            'photo'         => $file_name,
+            'password'      => bcrypt($request->password),
+            'phone_number'  => $request->phone_number,
+            'address'       => $request->address,
+            'is_admin'      => false,
+            'created_at'    => date('Y-m-d'),
+            'updated_at'    => date('Y-m-d')
+        ]);
+
+        Registration::insert([
+            'username'                   => $request->username,
+            'date_registration'          => date('Y-m-d'),
+            'id_tournament'              => $request->tournament,
+            'id_user'                    => $user_id,
+            'created_at'                 => date('Y-m-d'),
+            'updated_at'                 => date('Y-m-d')
+        ]);
+
+        return response()->json([
+            'message'  => 'Tambah Data Berhasil',
+            'status'   => 200,
+            'redirect' => '/login'
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+
+        $data = User::where('id_tcg', $id)
+                ->whereHas('registration')
+                ->with('registration')
+                ->first();
+
+        $data = [
+            'title' => 'Detail Tournament Participant',
+            'is_profile' => true,
+            'data' => $data,
+        ];
+
+        return view('main.admin.tournament.participant.show', $data);    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $data = User::where('id_user', $id)->first();
+
+        return response()->json([
+            'data'      => $data,
+            'status'    => 200
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        $data_old = User::find($request->id);
+
+        $request->validate([
+            // 'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
+            'username'              => ['required'],
+            'name'              => ['required'],
+            'email'             => ['required', 'email', 'unique:user,email'],
+            'password'          => ['required', 'min:8'],
+            'phone_number'          => ['required'],
+            'tournament'          => ['required','exists:tournament,id_tournament'],
+        ], [
+            // 'file.file'                    => 'Foto harus di isi!',
+            // 'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
+            // 'file.max'                     => 'Ukuran Foto maximal 2 MB!',
+            'username.required'            => 'Username wajib di isi!',
+            'name.required'                => 'Name wajib di isi!',
+            'email.required'               => 'Email wajib di isi!',
+            'email.email'                  => 'Email tidak sesuai!',
+            'email.unique'                 => 'Email sudah digunakan!',
+            'password.required'            => 'Password wajib di isi!',
+            'password.min'                 => 'Password minimal 8 karakter!',
+            'phone_number.required'        => 'Phone number wajib di isi!',
+            'tournament.required'          => 'Tournament wajib di isi!',
+            'tournament.exists'            => 'Tournament tidak valid!',
+        ]);
+
+
+        if ($request->file('file')) {
+            $file = $request->file('file');
+            $file_name = 'player-' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+
+            if ($data_old['photo'] != 'no-image.png') {
+                unlink(public_path('assets/img/profile/' . $data_old['photo']));
+            }
+
+            $file->move(public_path('assets/img/profile/'), $file_name);
+        } else {
+            $file_name = $data_old['photo'];
+        }
+
+        User::where('id_user', $request->id)->update([
+            'username'      => $request->username,
+            'name'          => $request->name,
+            'email'         => $request->email,
+            'photo'         => $file_name,
+            'password'      => bcrypt($request->password),
+            'phone_number'  => $request->phone_number,
+            'address'       => $request->address,
+            'updated_at'    => date('Y-m-d')
+        ]);
+
+        Registration::where('id_user', $request->id)->update([
+            'username'                   => $request->username,
+            'id_tournament'              => $request->tournament,
+            'updated_at'                 => date('Y-m-d')
+        ]);
+
+        return response()->json([
+            'message'   => 'Berhasil update data!',
+            'status'    => 200
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $data_old = Tcg::find($id);
+
+        if ($data_old['photo'] != 'no-image.png') {
+            unlink(public_path('assets/img/profile/' . $data_old['photo']));
+        }
+        
+        Registration::where('id_user', $id)->delete();
+        User::destroy($id);
+
+        return response()->json([
+            'message'   => 'Berhasil hapus data!',
+            'status'    => 200
+        ]);
+    }
+}

@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TcgController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TournamentParticipantController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,4 +30,6 @@ Route::middleware('web')->prefix('admin')->group(function () {
     Route::resource('/tcg', TcgController::class);
     Route::post('/tcg/get-data-tcg', [TcgController::class, 'get_data_tcg']);
 
+    Route::resource('/tournament-participants', TournamentParticipantController::class);
+    Route::post('/tournament-participants/get-data-tournament-participant', [TournamentParticipantController::class, 'get_data_tournament_participant']);
 });

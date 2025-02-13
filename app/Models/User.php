@@ -20,7 +20,7 @@ class User extends Authenticatable
 
     public function registration()
     {
-        return $this->hasOne(Registration::class);
+        return $this->hasOne(Registration::class, 'id_user'); 
     }
 
     public function ranking()
