@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tournament;
+use App\Models\Registration;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
@@ -49,6 +50,7 @@ class TournamentController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
             'name_tournament'              => ['required'],
@@ -72,12 +74,12 @@ class TournamentController extends Controller
             $file_name = 'tournament-' . Str::random(10) . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('assets/img/tournament/'), $file_name);
         } else {
-            $file_name = 'default.jpg';
+            $file_name = 'no-image.jpg';
         }
 
         Tournament::insert([
             'name_tournament'     => $request->name_tournament,
-            'date_tournament'     => Carbon::createFromFormat('d/m/Y', $request->date_tournament)->format('Y-m-d'),
+            'date_tournament'     => Carbon::createFromFormat('m/d/Y', $request->date_tournament)->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s'),
             'description_tournament'        => $request->description_tournament,
             'status_tournament'        => $request->status_tournament,
             'photo_tournament'          => $file_name,
@@ -100,7 +102,13 @@ class TournamentController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Tournament::where('id_tournament', $id)->first();
+        $type = 'detail';
+
+        return view('main.admin.tournament.show', [
+            'title' => 'Detail Tournament',
+            'data'  => $data
+        ]);
     }
 
     /**
@@ -111,8 +119,13 @@ class TournamentController extends Controller
      */
     public function edit($id)
     {
-        //
-    }
+        $data = Tournament::where('id_tournament', $id)->first();
+        $type = 'Edit';
+
+        return view('main.admin.tournament.show', [
+            'title' => 'Edit Tournament',
+            'data'  => $data
+        ]);    }
 
     /**
      * Update the specified resource in storage.
@@ -122,8 +135,54 @@ class TournamentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {   
+        $data_old = Tournament::find($request->id);
+
+        $request->validate([
+            // 'file'              => ['mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
+            'name_tournament'              => ['required'],
+            'date_tournament'             => ['required'],
+            'description_tournament'             => ['required'],
+            'status_tournament'             => ['required'],
+
+        ], [
+            // 'file.file'                    => 'Foto harus di isi!',
+            // 'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
+            // 'file.max'                     => 'Ukuran Foto maximal 2 MB!',
+            'name_tournament.required'                => 'Name wajib di isi!',
+            'date_tournament.required'               => 'Tanggal Tournament wajib di isi!',
+            'description_tournament.required'               => 'Description Tournament wajib di isi!',
+            'status_tournament.required'               => 'Status Tournament wajib di isi!',
+
+        ]);    
+
+        if ($request->file('file')) {
+            $file = $request->file('file');
+            $file_name = 'tournament-' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+
+            if ($data_old['photo_tournament'] != 'no-image.jpg') {
+                unlink(public_path('assets/img/tournament/' . $data_old['photo_tournament']));
+            }
+
+            $file->move(public_path('assets/img/tournament/'), $file_name);
+        } else {
+            $file_name = $data_old['photo_tournament'];
+        }
+
+        Tournament::where('id_tournament', $request->id)->update([
+            'name_tournament'     => $request->name_tournament,
+            'date_tournament'     => Carbon::createFromFormat('m/d/Y', $request->date_tournament)->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s'),
+            'description_tournament'        => $request->description_tournament,
+            'status_tournament'        => $request->status_tournament,
+            'photo_tournament'          => $file_name,
+            'updated_at'    => date('Y-m-d')
+        ]);
+
+        return response()->json([
+            'message'   => 'Berhasil update data!',
+            'status'    => 200,
+            'redirect'  => '/admin/tournament'
+        ]);
     }
 
     /**
@@ -136,10 +195,12 @@ class TournamentController extends Controller
     {
         $data_old = Tournament::find($id);
 
-        if ($data_old['photo_tournament'] != 'default.jpg') {
-            unlink(public_path('assets/img/tournament/' . $data_old['photo_tournament']));
+        if ($data_old['photo_tournament'] != 'no-image.jpg') {
+            // unlink(public_path('assets/img/tournament/' . $data_old['photo_tournament']));
         }
         
+        Registration::where('id_tournament', $id)->delete();
+
         Tournament::where('id_tournament', $id)->delete();
 
         return response()->json([

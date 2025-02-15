@@ -143,6 +143,7 @@ $(document.body).on("click", "#btnUpdateTournament", function () {
 
     var id = $("#id").val();
     var files = $("#file")[0].files;
+    var status_tournament = $('input[name="customRadio"]:checked').val();
     var fd = new FormData();
 
     fd.append("_token", _token);
@@ -152,7 +153,7 @@ $(document.body).on("click", "#btnUpdateTournament", function () {
     fd.append("name_tournament", $("#name_tournament").val());
     fd.append("date_tournament", $("#date_tournament").val());
     fd.append("description_tournament", $("#description_tournament").val());
-    fd.append("status_tournament", $("#status_tournament").val());
+    fd.append("status_tournament", status_tournament);
 
     $.ajax({
         url: `/admin/tournament/${id}`,
@@ -188,7 +189,7 @@ $(document.body).on("click", "#btnUpdateTournament", function () {
                         timer: 2000,
                     });
                     setTimeout(() => {
-                        window.location.href = "/admin/tournament";
+                        window.location.href = res.redirect;
                     }, 2000);
                     break;
                 case 401:

@@ -94,7 +94,8 @@
 const formattedDate = today.getDate().toString().padStart(2, '0') + '/' +
                       (today.getMonth() + 1).toString().padStart(2, '0') + '/' +
                       today.getFullYear();
-$('.drgpicker').val(formattedDate);    </script>
+// $('.drgpicker').val(formattedDate);    
+    </script>
     <script src="{{ asset('assets/js/apps.js') }}"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
