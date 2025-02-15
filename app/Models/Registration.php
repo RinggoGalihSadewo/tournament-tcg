@@ -20,6 +20,6 @@ class Registration extends Model
 
     public function tournament()
     {
-        return $this->belongsTo(Tournament::class);
+        return $this->belongsTo(Tournament::class, 'id_tournament');
     }
 }

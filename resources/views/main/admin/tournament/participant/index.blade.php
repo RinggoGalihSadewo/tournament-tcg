@@ -34,6 +34,7 @@
                 </div> --}}
                 <div class="form-row">
                     <div class="form-group col-6">
+                      <div id="userId"></div>
                       <label for="username" class="sr-only">Username</label>
                       <input type="text" id="username" class="form-control form-control" name="username" placeholder="Username" required="" autofocus="">
                       <div class="invalid-feedback text-left username"></div>
@@ -58,9 +59,11 @@
               </div>
               <div class="form-group mb-3">
                 <label for="tournament">Tournament</label>
-                <select class="form-control" id="tournament" name="tournament" placeholder="Tournament" value="">
+                <select class="form-control" id="tournament" name="tournament" placeholder="Tournament" >
                   <option disabled>--Choose Tournament--</option>
-                  <option>1</option>
+                  @foreach($tournaments as $key => $tournament)
+                  <option value="{{$tournament->id_tournament}}">{{ $tournament->name_tournament }}</option>
+                  @endforeach
                 </select>
                 <div class="invalid-feedback text-left tournament"></div>
               </div>

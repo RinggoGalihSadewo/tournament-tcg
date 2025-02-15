@@ -18,6 +18,13 @@
     <!-- Icons CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/feather.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/select2.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dropzone.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/uppy.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/jquery.steps.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/jquery.timepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/quill.snow.css') }}">
     <!-- Date Range Picker CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.css') }}">
     <!-- App CSS -->
@@ -51,6 +58,7 @@
     <script src="{{ asset('assets/js/main/index.js') }}"></script>
     <script src="{{ asset('assets/js/main/tcg.js') }}"></script>
     <script src="{{ asset('assets/js/main/user.js') }}"></script>
+    <script src="{{ asset('assets/js/main/tournament.js') }}"></script>
 
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>
@@ -72,7 +80,21 @@
           [16, 32, 64, "All"]
         ]
       });
-    </script>
+      $('.drgpicker').daterangepicker(
+          {
+            singleDatePicker: true,
+            timePicker: false,
+            showDropdowns: true,
+            locale:
+            {
+              format: 'MM/DD/YYYY'
+            }
+          });
+          const today = new Date();
+const formattedDate = today.getDate().toString().padStart(2, '0') + '/' +
+                      (today.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                      today.getFullYear();
+$('.drgpicker').val(formattedDate);    </script>
     <script src="{{ asset('assets/js/apps.js') }}"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>

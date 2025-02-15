@@ -22,7 +22,8 @@ class CreateTournamentTable extends Migration
             $table->string('status_tournament');
             $table->timestamps();
             
-            $table->foreignId('id_tcg')->references('id_tcg')->on('tcg');
+            $table->foreignId('id_tcg')->nullable()->references('id_tcg')->on('tcg');
+            // $table->foreignId('id_tcg')->nullable()->constrained('tcg');
         });
     }
 

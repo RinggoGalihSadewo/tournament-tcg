@@ -1,0 +1,149 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Tournament;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
+class TournamentController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('main.admin.tournament.index');
+    }
+
+    public function get_data_tournament()
+    {
+        $data = Tournament::all();
+
+        return response()->json([
+            'data'      => $data,
+            'status'    => 200
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('main.admin.tournament.show', [
+            'title' => 'Create Tournament'
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
+            'name_tournament'              => ['required'],
+            'date_tournament'             => ['required'],
+            'description_tournament'             => ['required'],
+            'status_tournament'             => ['required'],
+
+        ], [
+            'file.file'                    => 'Foto harus di isi!',
+            'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
+            'file.max'                     => 'Ukuran Foto maximal 2 MB!',
+            'name_tournament.required'                => 'Name wajib di isi!',
+            'date_tournament.required'               => 'Tanggal Tournament wajib di isi!',
+            'description_tournament.required'               => 'Description Tournament wajib di isi!',
+            'status_tournament.required'               => 'Status Tournament wajib di isi!',
+
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file_name = 'tournament-' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('assets/img/tournament/'), $file_name);
+        } else {
+            $file_name = 'default.jpg';
+        }
+
+        Tournament::insert([
+            'name_tournament'     => $request->name_tournament,
+            'date_tournament'     => Carbon::createFromFormat('d/m/Y', $request->date_tournament)->format('Y-m-d'),
+            'description_tournament'        => $request->description_tournament,
+            'status_tournament'        => $request->status_tournament,
+            'photo_tournament'          => $file_name,
+            'created_at'               =>  date('Y-m-d'),
+            'updated_at'                => date('Y-m-d')
+        ]);
+
+        return response()->json([
+            'message'  => 'Tambah Data Berhasil',
+            'status'   => 200,
+            'redirect' => '/admin/tournament'
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $data_old = Tournament::find($id);
+
+        if ($data_old['photo_tournament'] != 'default.jpg') {
+            unlink(public_path('assets/img/tournament/' . $data_old['photo_tournament']));
+        }
+        
+        Tournament::where('id_tournament', $id)->delete();
+
+        return response()->json([
+            'message'   => 'Berhasil hapus data!',
+            'status'    => 200
+        ]);    }
+}

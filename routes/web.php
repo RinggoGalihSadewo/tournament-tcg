@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TcgController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TournamentParticipantController;
+use App\Http\Controllers\TournamentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,11 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::middleware('web')->prefix('admin')->group(function () {
     Route::resource('/tcg', TcgController::class);
     Route::post('/tcg/get-data-tcg', [TcgController::class, 'get_data_tcg']);
+
+    Route::get('/tournament/add', [TournamentController::class, 'create']);
+    Route::post('/tournament/get-data-tournament', [TournamentController::class, 'get_data_tournament']);
+    Route::resource('/tournament', TournamentController::class);
+    
 
     Route::resource('/tournament-participants', TournamentParticipantController::class);
     Route::post('/tournament-participants/get-data-tournament-participant', [TournamentParticipantController::class, 'get_data_tournament_participant']);

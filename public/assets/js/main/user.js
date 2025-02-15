@@ -26,10 +26,23 @@ loadDataTournamentParticipant = () => {
             },
             { title: "Username", data: "registration.username" },
             {
-                title: "Date Registration",
+                title: "Date Tournament",
                 data: "registration.date_registration",
+                render: function (data, type, row) {
+                    if (!data) return "-"; // Handle jika data kosong
+                    let date = new Date(data);
+                    let formattedDate = date.toLocaleDateString("id-ID", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                    });
+                    return formattedDate; // Format ke "DD/MM/YYYY"
+                },
             },
-            { title: "Tournament", data: "registration.username" },
+            {
+                title: "Tournament",
+                data: "registration.tournament.name_tournament",
+            },
             {
                 title: "Aksi",
                 data: null,
@@ -64,13 +77,37 @@ $("#btnModalTambahTournamentParticipant").click(() => {
         <button type="submit" class="btn mb-2 btn-primary" id="btnTambahTournamentParticipant">Save</button>
     `);
 
-    $("#file").val("");
+    $("#file").val("").prop("disabled", false);
     $("#file").removeClass("is-invalid");
     $(".file").text("");
 
-    $("#name").val("");
+    $("#name").val("").prop("disabled", false);
     $("#name").removeClass("is-invalid");
     $(".name").text("");
+
+    $("#username").val("").prop("disabled", false);
+    $("#username").removeClass("is-invalid");
+    $(".username").text("");
+
+    $("#email").val("").prop("disabled", false);
+    $("#email").removeClass("is-invalid");
+    $(".email").text("");
+
+    $("#password").val("").prop("disabled", false);
+    $("#password").removeClass("is-invalid");
+    $(".password").text("");
+
+    $("#tournament").val("").prop("disabled", false);
+    $("#tournament").removeClass("is-invalid");
+    $(".tournament").text("");
+
+    $("#phone_number").val("").prop("disabled", false);
+    $("#phone_number").removeClass("is-invalid");
+    $(".phone_number").text("");
+
+    $("#address").val("").prop("disabled", false);
+    $("#address").removeClass("is-invalid");
+    $(".address").text("");
 });
 
 // Modal Edit
@@ -89,6 +126,18 @@ modalEditTournamentParticipant = (id, isDetail) => {
                         : "Edit Data Tournament Participant";
                     $(".modal-title").html(title);
 
+                    if (!isDetail) {
+                        $(".modal-button").html(`
+                            <button type="submit" class="btn mb-2 btn-primary" id="btnUpdateTournamentParticipants">Update</button>
+                        `);
+                    } else {
+                        $(".modal-button").html("");
+                    }
+
+                    $("#userId").html(`
+                        <input type="hidden" id="id" class="form-control mb-2" name="id" value="${id}">
+                    `);
+
                     $("#result_photos").html(`
                         <img src="/assets/img/profile/${res.data.photo}" class="avatar-img img-thumbnail img-fluid" alt="" id="show_photos" width="140px" height="140px">
                     `);
@@ -98,24 +147,46 @@ modalEditTournamentParticipant = (id, isDetail) => {
                         .removeClass("is-invalid");
                     $(".file").text("");
 
+                    $("#username")
+                        .val(res.data.username)
+                        .prop("disabled", isDetail)
+                        .removeClass("is-invalid");
+                    $(".username").text("");
+
                     $("#name")
                         .val(res.data.name)
                         .prop("disabled", isDetail)
                         .removeClass("is-invalid");
                     $(".name").text("");
 
-                    $("#userId").html(`
-                        <input type="hidden" id="id" class="form-control mb-2" name="id" value="${id}">
-                    `);
+                    $("#email")
+                        .val(res.data.email)
+                        .prop("disabled", true)
+                        .removeClass("is-invalid");
+                    $(".email").text("");
 
-                    // Tombol update hanya muncul saat mode edit
-                    if (!isDetail) {
-                        $(".modal-button").html(`
-                            <button type="submit" class="btn mb-2 btn-primary" id="btnUpdateTournamentParticipants">Update</button>
-                        `);
-                    } else {
-                        $(".modal-button").html(""); // Kosongkan saat detail
-                    }
+                    $("#password")
+                        .val(res.data.password)
+                        .prop("disabled", true)
+                        .removeClass("is-invalid");
+                    $(".password").text("");
+
+                    $("#phone_number")
+                        .val(res.data.phone_number)
+                        .prop("disabled", isDetail)
+                        .removeClass("is-invalid");
+                    $(".phone_number").text("");
+
+                    $("#address")
+                        .val(res.data.address)
+                        .prop("disabled", isDetail)
+                        .removeClass("is-invalid");
+                    $(".address").text("");
+
+                    $("#tournament")
+                        .prop("disabled", isDetail)
+                        .val(res.data.registration.tournament.id_tournament)
+                        .removeClass("is-invalid");
                     break;
                 case 401:
                     Swal.fire({
@@ -239,6 +310,7 @@ $(document.body).on("click", "#btnUpdateTournamentParticipants", function () {
     fd.append("email", $("#email").val());
     fd.append("password", $("#password").val());
     fd.append("phone_number", $("#phone_number").val());
+    fd.append("address", $("#address").val());
     fd.append("tournament", $("#tournament").val());
 
     $.ajax({

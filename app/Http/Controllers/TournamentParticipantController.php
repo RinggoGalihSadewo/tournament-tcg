@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Registration;
+use App\Models\Tournament;
+use Illuminate\Support\Str;
 
 class TournamentParticipantController extends Controller
 {
@@ -15,21 +17,28 @@ class TournamentParticipantController extends Controller
      */
     public function index()
     {
-        return view('main.admin.tournament.participant.index');
+        $tournaments = Tournament::all();
+
+        return view('main.admin.tournament.participant.index', compact('tournaments'));
     }
 
     public function get_data_tournament_participant() 
     {
-        $data = User::where('is_admin', true)
-                ->whereHas('registration')
-                ->with('registration')
-                ->get();
-
+        $data = User::where('is_admin', false)
+                    ->whereHas('registration', function ($query) {
+                        $query->whereHas('tournament');
+                    })
+                    ->with(['registration' => function ($query) {
+                        $query->with('tournament');
+                    }])
+                    ->get();
+    
         return response()->json([
-            'data'      => $data,
-            'status'    => 200
+            'data'   => $data,
+            'status' => 200
         ]);
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -51,9 +60,9 @@ class TournamentParticipantController extends Controller
     {
         $request->validate([
             // 'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
+            'email'             => ['required'],
             'username'              => ['required'],
             'name'              => ['required'],
-            'email'             => ['required', 'email', 'unique:user,email'],
             'password'          => ['required', 'min:8'],
             'phone_number'          => ['required'],
             'tournament'          => ['required','exists:tournament,id_tournament'],
@@ -61,11 +70,10 @@ class TournamentParticipantController extends Controller
             // 'file.file'                    => 'Foto harus di isi!',
             // 'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
             // 'file.max'                     => 'Ukuran Foto maximal 2 MB!',
+            'email.required'               => 'Email wajib di isi!',
             'username.required'            => 'Username wajib di isi!',
             'name.required'                => 'Name wajib di isi!',
             'email.required'               => 'Email wajib di isi!',
-            'email.email'                  => 'Email tidak sesuai!',
-            'email.unique'                 => 'Email sudah digunakan!',
             'password.required'            => 'Password wajib di isi!',
             'password.min'                 => 'Password minimal 8 karakter!',
             'phone_number.required'        => 'Phone number wajib di isi!',
@@ -120,8 +128,12 @@ class TournamentParticipantController extends Controller
     {
 
         $data = User::where('id_tcg', $id)
-                ->whereHas('registration')
-                ->with('registration')
+                ->whereHas('registration', function ($query) {
+                    $query->whereHas('tournament');
+                })
+                ->with(['registration' => function ($query) {
+                    $query->with('tournament');
+                }])
                 ->first();
 
         $data = [
@@ -140,7 +152,14 @@ class TournamentParticipantController extends Controller
      */
     public function edit($id)
     {
-        $data = User::where('id_user', $id)->first();
+        $data = User::where('id_user', $id)
+                ->whereHas('registration', function ($query) {
+                    $query->whereHas('tournament');
+                })
+                ->with(['registration' => function ($query) {
+                    $query->with('tournament');
+                }])
+                ->first();
 
         return response()->json([
             'data'      => $data,
@@ -161,9 +180,10 @@ class TournamentParticipantController extends Controller
 
         $request->validate([
             // 'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
+            'email'              => ['required'],
             'username'              => ['required'],
             'name'              => ['required'],
-            'email'             => ['required', 'email', 'unique:user,email'],
+            'email'             => ['required'],
             'password'          => ['required', 'min:8'],
             'phone_number'          => ['required'],
             'tournament'          => ['required','exists:tournament,id_tournament'],
@@ -171,11 +191,10 @@ class TournamentParticipantController extends Controller
             // 'file.file'                    => 'Foto harus di isi!',
             // 'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
             // 'file.max'                     => 'Ukuran Foto maximal 2 MB!',
+            'email.required'               => 'Email wajib di isi!',
             'username.required'            => 'Username wajib di isi!',
             'name.required'                => 'Name wajib di isi!',
             'email.required'               => 'Email wajib di isi!',
-            'email.email'                  => 'Email tidak sesuai!',
-            'email.unique'                 => 'Email sudah digunakan!',
             'password.required'            => 'Password wajib di isi!',
             'password.min'                 => 'Password minimal 8 karakter!',
             'phone_number.required'        => 'Phone number wajib di isi!',
@@ -200,9 +219,9 @@ class TournamentParticipantController extends Controller
         User::where('id_user', $request->id)->update([
             'username'      => $request->username,
             'name'          => $request->name,
-            'email'         => $request->email,
+            // 'email'         => $request->email,
             'photo'         => $file_name,
-            'password'      => bcrypt($request->password),
+            // 'password'      => bcrypt($request->password),
             'phone_number'  => $request->phone_number,
             'address'       => $request->address,
             'updated_at'    => date('Y-m-d')
@@ -228,7 +247,7 @@ class TournamentParticipantController extends Controller
      */
     public function destroy($id)
     {
-        $data_old = Tcg::find($id);
+        $data_old = User::find($id);
 
         if ($data_old['photo'] != 'no-image.png') {
             unlink(public_path('assets/img/profile/' . $data_old['photo']));
