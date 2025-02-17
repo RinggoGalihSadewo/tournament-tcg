@@ -8,6 +8,8 @@ use App\Http\Controllers\TournamentParticipantController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\ReportController;
 
+use App\Http\Controllers\ClientController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,8 +21,11 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-Route::get('/', [AuthController::class, 'index'])->name('login');
-Route::get('/login', [AuthController::class, 'index']);
+// Cliean
+Route::get('/', [ClientController::class, 'index']);
+
+// Admin
+Route::get('/login', [AuthController::class, 'index'])->name('login');
 
 Route::get('/registration', [AuthController::class, 'registration']);
 Route::post('/registration', [AuthController::class, 'createRegistration']);
