@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tcg;
 use App\Models\Grade;
+
 use Illuminate\Support\Str;
 
 class TcgController extends Controller

@@ -6,6 +6,7 @@ use App\Http\Controllers\TcgController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TournamentParticipantController;
 use App\Http\Controllers\TournamentController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,8 @@ Route::middleware('web')->prefix('admin')->group(function () {
     Route::post('/tournament-participants/pairing/save-pairing', [TournamentParticipantController::class, 'save_pairing']);
     Route::resource('/tournament-participants', TournamentParticipantController::class);
     Route::post('/tournament-participants/get-data-tournament-participant', [TournamentParticipantController::class, 'get_data_tournament_participant']);
+
+    Route::get('/report/download-pdf', [ReportController::class, 'download_pdf']);
+    Route::post('/report/get-data-report', [ReportController::class, 'get_data_report']);
+    Route::resource('/report', ReportController::class);
 });

@@ -1,6 +1,6 @@
 @extends('layout.main.master')
 
-@section('title', 'Data TCG | Tournament TCG')
+@section('title', 'Data TCG | WIN STREAX')
 
 @section('content')
 

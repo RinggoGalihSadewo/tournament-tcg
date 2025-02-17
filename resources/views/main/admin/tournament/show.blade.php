@@ -1,6 +1,6 @@
 @extends('layout.main.master')
 
-@section('title', $title . ' | Tournament TCG')
+@section('title', $title . ' | WIN STREAX')
 
 @section('content')
 

@@ -1,13 +1,12 @@
 @extends('layout.main.master')
 
-@section('title', 'Data Tournament | WIN STREAX')
+@section('title', 'Report | WIN STREAX')
 
 @section('content')
 
 <div class="d-flex justify-content-between">
-    <h2 class="mb-2 page-title">Data Tournament</h2>
-    <a href="/admin/tournament/add">    <button type="button" class="btn mb-2 btn-primary">Tambah Data</button>
-    </a>
+    <h2 class="mb-2 page-title">Data Report Tournament</h2>
+    <a href="/admin/report/download-pdf" class="btn mb-2 btn-primary">Download Report</a>
 </div>
 <div class="row my-4">
   <!-- Small table -->
@@ -19,10 +18,9 @@
           <thead>
             <tr>
               <th class="text-dark">#</th>
-              <th class="text-dark">Name Tournament</th>
-              <th class="text-dark">Date Tournament</th>
-              <th class="text-dark">Description</th>
-              <th class="text-dark">Action</th>
+              <th class="text-dark">Name</th>
+              <th class="text-dark">Poin</th>
+              <th class="text-dark">Ranking</th>
             </tr>
           </thead>
           <tbody>

@@ -15,11 +15,11 @@ class Ranking extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function tournament()
     {
-        return $this->belongsTo(Tournament::class);
+        return $this->belongsTo(Tournament::class, 'id_tournament');
     }
 }

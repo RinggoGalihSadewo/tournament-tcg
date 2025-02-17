@@ -60,6 +60,7 @@
     <script src="{{ asset('assets/js/main/user.js') }}"></script>
     <script src="{{ asset('assets/js/main/tournament.js') }}"></script>
     <script src="{{ asset('assets/js/main/pairing.js') }}"></script>
+    <script src="{{ asset('assets/js/main/report.js') }}"></script>
 
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>

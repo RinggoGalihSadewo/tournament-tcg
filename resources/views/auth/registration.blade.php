@@ -1,6 +1,6 @@
 @extends('layout.auth.master')
 
-@section('title', 'Login | Tournament TCG')
+@section('title', 'Login | WIN STREAX')
 
 @section('content')
 
