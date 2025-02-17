@@ -8,8 +8,8 @@
     <div class="row align-items-center h-100">
       <form action="" method="post" class="col-lg-3 col-md-4 col-10 mx-auto text-center">
         @csrf
-        <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="{{ url('/') }}">
-          <img src="{{ asset('assets/img/logo.png') }}" alt="" width="180px">
+        <a class="navbar-brand mx-auto mt-2 flex-fill text-center mb-3" href="{{ url('/') }}">
+          <img src="{{ asset('assets/img/logo.png') }}" alt="" width="250px">
         </a>
         @if(session()->has('user'))
           <p>Welcome, {{ session('user')->name }}!</p>

@@ -35,7 +35,9 @@ Route::middleware('web')->prefix('admin')->group(function () {
     Route::post('/tournament/get-data-tournament', [TournamentController::class, 'get_data_tournament']);
     Route::resource('/tournament', TournamentController::class);
     
-
+    Route::get('/tournament-participants/pairing', [TournamentParticipantController::class, 'pairing_view']);
+    Route::post('/tournament-participants/pairing/get-participant-by-tournament', [TournamentParticipantController::class, 'get_participant_by_tournament']);
+    Route::post('/tournament-participants/pairing/save-pairing', [TournamentParticipantController::class, 'save_pairing']);
     Route::resource('/tournament-participants', TournamentParticipantController::class);
     Route::post('/tournament-participants/get-data-tournament-participant', [TournamentParticipantController::class, 'get_data_tournament_participant']);
 });

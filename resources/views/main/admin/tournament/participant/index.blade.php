@@ -6,7 +6,6 @@
 
 <div class="d-flex justify-content-between">
     <h2 class="mb-2 page-title">Data Tournament Participants</h2>
-    <button type="button" class="btn mb-2 btn-primary" data-toggle="modal" data-target="#modalTournamentParticipant" id="btnModalTambahTournamentParticipant">Tambah Data</button>
     <!-- Modal -->
     <div class="modal fade" id="modalTournamentParticipant" tabindex="-1" role="dialog" aria-labelledby="modalTournamentParticipantLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -87,7 +86,16 @@
       </div>
     </div>
 </div>
-<div class="row my-4">
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-end" style="gap: 5px;">
+      <a href="/admin/tournament-participants/pairing" class="btn mb-2 btn-primary">Start Pairing</a>
+      <button type="button" class="btn mb-2 btn-primary" data-toggle="modal" data-target="#modalTournamentParticipant" id="btnModalTambahTournamentParticipant">Tambah Data</button>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-4">
   <!-- Small table -->
   <div class="col-md-12">
     <div class="card shadow">

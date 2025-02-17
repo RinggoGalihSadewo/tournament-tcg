@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Registration;
 use App\Models\Tournament;
+use App\Models\Ranking;
+
 use Illuminate\Support\Str;
 
 class TournamentParticipantController extends Controller
@@ -20,6 +22,26 @@ class TournamentParticipantController extends Controller
         $tournaments = Tournament::all();
 
         return view('main.admin.tournament.participant.index', compact('tournaments'));
+    }
+
+    public function pairing_view(){
+
+        $participants = User::where('is_admin', false)
+                        ->whereHas('registration', function ($query) {
+                            $query->whereHas('tournament');
+                        })
+                        ->with(['registration' => function ($query) {
+                            $query->with('tournament');
+                        }])
+                        ->get();
+
+        $tournaments = Tournament::all();
+
+        return view('main.admin.tournament.participant.pairing', [
+            'title' => 'Pairing Participants',
+            'participants' => $participants,
+            'tournaments' => $tournaments
+        ]);
     }
 
     public function get_data_tournament_participant() 
@@ -38,8 +60,67 @@ class TournamentParticipantController extends Controller
             'status' => 200
         ]);
     }
-    
 
+    public function get_participant_by_tournament(Request $request) 
+    {
+        $id_tournament = $request->id_tournament; // Ambil ID dari request
+    
+        $data = User::where('is_admin', false)
+                    ->whereHas('registration', function ($query) use ($id_tournament) {
+                        $query->whereHas('tournament', function ($q) use ($id_tournament) {
+                            $q->where('id_tournament', $id_tournament); // Filter berdasarkan ID turnamen
+                        });
+                    })
+                    ->with(['registration' => function ($query) use ($id_tournament) {
+                        $query->whereHas('tournament', function ($q) use ($id_tournament) {
+                            $q->where('id_tournament', $id_tournament); // Pastikan hanya mengambil registrasi turnamen ini
+                        })->with('tournament');
+                    }])
+                    ->get();
+    
+        return response()->json([
+            'data'   => $data,
+            'status' => 200
+        ]);
+    }
+
+    public function save_pairing(Request $request)
+    {
+        $participants = $request->participants;
+        $participants = json_decode($request->participants, true);
+        $id_tournament = $request->id_tournament;
+    
+        if (is_array($participants) && count($participants) > 0) {
+    
+            for ($i = 0; $i < count($participants); $i++) {
+    
+                $user = User::where('name', $participants[$i]['name'])->first(); 
+    
+                if ($user) {
+                    Ranking::insert([
+                        'poin'                       => $participants[$i]['points'],
+                        'id_tournament'              => $id_tournament,
+                        'id_user'                    => $user->id_user,
+                        'created_at'                 => date('Y-m-d'),
+                        'updated_at'                 => date('Y-m-d')
+                    ]);
+                }
+            }
+    
+            return response()->json([
+                'message'  => 'Tambah Data Berhasil',
+                'status'   => 200,
+                'redirect' => '/admin/tournament-participants'
+            ]);
+        }
+    
+        return response()->json([
+            'message' => 'Data tidak valid',
+            'status'  => 400
+        ]);
+    }
+    
+    
     /**
      * Show the form for creating a new resource.
      *
