@@ -15,7 +15,7 @@ class Tournament extends Model
 
     public function registration()
     {
-        return $this->hasOne(Registration::class, 'id_tournament');
+        return $this->hasMany(Registration::class, 'id_tournament');
     }
 
     public function ranking()

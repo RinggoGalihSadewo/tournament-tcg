@@ -23,18 +23,24 @@ use App\Http\Controllers\ClientController;
 
 // Cliean
 Route::get('/', [ClientController::class, 'index']);
-
-// Admin
 Route::get('/login', [AuthController::class, 'view_login_client']);
-Route::get('/login-admin', [AuthController::class, 'index'])->name('login');
+
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/registration', [AuthController::class, 'view_registration_client']);
 Route::post('/registration', [AuthController::class, 'create_registration_client']);
 
+Route::get('/tournaments', [TournamentController::class, 'view_tournament_client']);
+Route::post('/tournaments', [TournamentParticipantController::class, 'regis_tournament_client']);
+
+Route::get('/my-events', [TournamentController::class, 'view_my_events_client']);
+
+// Admin
+Route::get('/login-admin', [AuthController::class, 'index'])->name('login');
+
 Route::get('/registration-admin', [AuthController::class, 'registration']);
 Route::post('/registration-admin', [AuthController::class, 'create_registration']);
 
-Route::post('/login', [AuthController::class, 'login']);
 Route::post('/login-admin', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 

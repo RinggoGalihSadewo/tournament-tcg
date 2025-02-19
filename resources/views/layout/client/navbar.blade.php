@@ -26,10 +26,12 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="">Tournaments</a></li>
-                                    <li><a href="event.html">My Events</a></li>
-                                    <li><a href="blog.html">Deck Log</a></li>
+                                    <li><a href="/">Home</a></li>
+                                    <li><a href="/tournaments">Tournaments</a></li>
+                                    @if(session()->has('user'))
+                                    <li><a href="/my-events">My Events</a></li>
+                                    <li><a href="/deck-log">Deck Log</a></li>
+                                    @endif
                                 </ul>
 
                                 {{-- @if(Auth::user()->name) --}}
@@ -38,7 +40,7 @@
                                     <!-- Login/Register -->
                                     <div class="login-register-btn mr-50">
                                         @if(session()->has('user'))
-                                        <a href="/my-profile">My Profile</a>
+                                        <a id="btnLogout">Logout</a>
                                         @else
                                         <a href="/login" id="loginBtn">Login / Register</a>
                                         @endif

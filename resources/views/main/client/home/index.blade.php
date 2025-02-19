@@ -18,7 +18,7 @@
                       <div class="hero-slides-content text-center">
                           <h6 data-animation="fadeInUp" data-delay="100ms">Tournament</h6>
                           <h2 data-animation="fadeInUp" data-delay="300ms">WIN STREAX <span>WIN STREAX</span></h2>
-                          <a data-animation="fadeInUp" data-delay="500ms" href="#" class="btn oneMusic-btn mt-50">See All Tournament <i class="fa fa-angle-double-right"></i></a>
+                          <a data-animation="fadeInUp" data-delay="500ms" href="/tournaments" class="btn oneMusic-btn mt-50">See All Tournament <i class="fa fa-angle-double-right"></i></a>
                       </div>
                   </div>
               </div>
@@ -36,7 +36,7 @@
                     <div class="hero-slides-content text-center">
                         <h6 data-animation="fadeInUp" data-delay="100ms">Tournament</h6>
                         <h2 data-animation="fadeInUp" data-delay="300ms">WIN STREAX <span>WIN STREAX</span></h2>
-                        <a data-animation="fadeInUp" data-delay="500ms" href="#" class="btn oneMusic-btn mt-50">See All Tournament <i class="fa fa-angle-double-right"></i></a>
+                        <a data-animation="fadeInUp" data-delay="500ms" href="/tournaments" class="btn oneMusic-btn mt-50">See All Tournament <i class="fa fa-angle-double-right"></i></a>
                     </div>
                   </div>
               </div>

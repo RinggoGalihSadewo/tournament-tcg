@@ -199,6 +199,24 @@ class TournamentParticipantController extends Controller
         ]);
     }
 
+    public function regis_tournament_client(Request $request)
+    {
+        Registration::insert([
+            'username'                   => $request->username,
+            'date_registration'          => date('Y-m-d'),
+            'id_tournament'              => $request->id_tournament,
+            'id_user'                    => $request->id_user,
+            'created_at'                 => date('Y-m-d'),
+            'updated_at'                 => date('Y-m-d')
+        ]);
+
+        return response()->json([
+            'message'  => 'Berhasil Regis!',
+            'status'   => 200,
+            'redirect' => '/tournaments'
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *

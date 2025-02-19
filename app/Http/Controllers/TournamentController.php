@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tournament;
 use App\Models\Registration;
+
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class TournamentController extends Controller
@@ -29,6 +31,28 @@ class TournamentController extends Controller
             'status'    => 200
         ]);
     }
+
+    public function view_tournament_client()
+    {
+        $tournaments = Tournament::where('status_tournament', 'active')->with('registration')->get();
+
+        return view('main.client.tournament.index', compact('tournaments'));
+    }
+
+    public function view_my_events_client()
+    {
+        $id_user = Auth::user()->id_user;
+    
+        $tournaments = Tournament::where('status_tournament', 'active')
+            ->whereHas('registration', function($query) use ($id_user) {
+                $query->where('id_user', $id_user);
+            })
+            ->with('registration') 
+            ->get();
+    
+        return view('main.client.my-event.index', compact('tournaments'));
+    }
+    
 
     /**
      * Show the form for creating a new resource.

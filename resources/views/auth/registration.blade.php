@@ -62,7 +62,7 @@
         </div>
         <button class="btn btn-primary btn-block" type="submit" id="btnRegistration">REGISTRATION</button>
         <div class="mt-4">
-          <a href="/login"><b>LOGIN</b></a>
+          <a href="/login-admin"><b>LOGIN</b></a>
         </div>
         <p class="mt-3 mb-3 text-muted">{{ config('app.name') }} © {{ date('Y') }}</p>
       </form>

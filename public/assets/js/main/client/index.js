@@ -144,3 +144,123 @@ $("#btnLogin").click(() => {
         },
     });
 });
+
+// Logout
+$("#btnLogout").click(() => {
+    event.preventDefault();
+
+    Swal.fire({
+        title: "Apakah anda yakin ingin?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#eea303",
+        confirmButtonText: "#fffff",
+        confirmButtonText: "Logout",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/logout",
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    _token: _token,
+                },
+                success: (res) => {
+                    switch (res.status) {
+                        case 200:
+                            Swal.fire({
+                                title: "Berhasil!",
+                                text: res.message,
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 2000,
+                            });
+
+                            setTimeout(() => {
+                                location.href = res.redirect;
+                            }, 2000);
+                            break;
+                        case 401:
+                            Swal.fire({
+                                title: "Gagal!",
+                                text: res.message,
+                                icon: "error",
+                                showConfirmButton: false,
+                                timer: 2000,
+                            });
+                            break;
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status == 422) {
+                        var errors = jqXHR.responseJSON.errors;
+
+                        $.each(errors, function (key, val) {
+                            $("#" + key).addClass("is-invalid");
+                            $("." + key).text(val[0]);
+                        });
+                    }
+                },
+            });
+        }
+    });
+});
+
+// Regis Tournamnet
+$("#btnRegisTournament").click(function (event) {
+    event.preventDefault();
+
+    var id_user = $(this).data("id-user");
+    var username = $(this).data("username");
+    var id_tournament = $(this).data("id-tournament");
+
+    console.log(id_user, username, id_tournament);
+
+    $.ajax({
+        url: "/tournaments",
+        type: "POST",
+        dataType: "JSON",
+        data: {
+            _token: _token,
+            id_user,
+            username,
+            id_tournament,
+        },
+        success: (res) => {
+            switch (res.status) {
+                case 200:
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: res.message,
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+
+                    setTimeout(() => {
+                        location.href = res.redirect;
+                    }, 2000);
+                    break;
+                case 401:
+                    Swal.fire({
+                        title: "Gagal!",
+                        text: res.message,
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                    break;
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 422) {
+                var errors = jqXHR.responseJSON.errors;
+
+                $.each(errors, function (key, val) {
+                    $("#" + key).addClass("is-invalid");
+                    $("." + key).text(val[0]);
+                });
+            }
+        },
+    });
+});

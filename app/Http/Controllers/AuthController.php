@@ -56,6 +56,9 @@ class AuthController extends Controller
                     ]);
                 }else {
                     $request->session()->put('user', $data);
+                    $request->session()->regenerate();
+                    // dd(session('user'));
+
                     return response()->json([
                         'message'   => 'Berhasil Login!',
                         'status'    => 200,
