@@ -31,6 +31,12 @@
                                     @if(session()->has('user'))
                                     <li><a href="/my-events">My Events</a></li>
                                     <li><a href="/deck-log">Deck Log</a></li>
+                                    <li><a href="#">{{ Auth::user()->name }}</a>
+                                        <ul class="dropdown">
+                                            <li><a href="/my-profile">My Profile</a></li>
+                                            <li><a id="btnLogout" style="cursor: pointer;">Logout</a></li>
+                                        </ul>
+                                    </li>
                                     @endif
                                 </ul>
 
@@ -39,9 +45,7 @@
                                 <div class="login-register-cart-button d-flex align-items-center">
                                     <!-- Login/Register -->
                                     <div class="login-register-btn mr-50">
-                                        @if(session()->has('user'))
-                                        <a id="btnLogout">Logout</a>
-                                        @else
+                                        @if(!session()->has('user'))
                                         <a href="/login" id="loginBtn">Login / Register</a>
                                         @endif
                                     </div>

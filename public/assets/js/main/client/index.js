@@ -264,3 +264,80 @@ $("#btnRegisTournament").click(function (event) {
         },
     });
 });
+
+// Update My Profile
+$("#btnUpdateProfile").click(() => {
+    event.preventDefault();
+
+    const form = $("#form_update_my_profile")[0];
+    const data = new FormData(form);
+
+    const id_user = $("#id_user").val();
+    data.append("id_user", id_user);
+
+    data.append("_token", _token);
+    data.append("_method", "PATCH");
+
+    $.ajax({
+        url: "/my-profile",
+        type: "post",
+        dataType: "JSON",
+        enctype: "multipart/form-data",
+        processData: false,
+        contentType: false,
+        cache: false,
+        data,
+        beforeSend: () => {
+            $("#username").removeClass("is-invalid");
+            $(".username").empty();
+
+            $("#name").removeClass("is-invalid");
+            $(".name").empty();
+
+            $("#email").removeClass("is-invalid");
+            $(".email").empty();
+
+            $("#password").removeClass("is-invalid");
+            $(".password").empty();
+
+            $("#phone_number").removeClass("is-invalid");
+            $(".phone_number").empty();
+        },
+        success: (res) => {
+            switch (res.status) {
+                case 200:
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: res.message,
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+
+                    setTimeout(() => {
+                        location.href = res.redirect;
+                    }, 2000);
+                    break;
+                case 401:
+                    Swal.fire({
+                        title: "Gagal!",
+                        text: res.message,
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                    break;
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 422) {
+                var errors = jqXHR.responseJSON.errors;
+
+                $.each(errors, function (key, val) {
+                    $("#" + key).addClass("is-invalid");
+                    $("." + key).text(val[0]);
+                });
+            }
+        },
+    });
+});

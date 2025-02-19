@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TournamentParticipantController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DeckLogController;
 
 use App\Http\Controllers\ClientController;
 
@@ -34,6 +35,11 @@ Route::get('/tournaments', [TournamentController::class, 'view_tournament_client
 Route::post('/tournaments', [TournamentParticipantController::class, 'regis_tournament_client']);
 
 Route::get('/my-events', [TournamentController::class, 'view_my_events_client']);
+
+Route::resource('/deck-log', DeckLogController::class);
+
+Route::get('/my-profile', [AuthController::class, 'view_my_profile_client']);
+Route::patch('/my-profile', [AuthController::class, 'update_my_profile_client']);
 
 // Admin
 Route::get('/login-admin', [AuthController::class, 'index'])->name('login');
