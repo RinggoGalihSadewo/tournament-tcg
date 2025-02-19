@@ -6,6 +6,7 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
@@ -17,6 +18,12 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="{{asset('assets/css/client/style.css')}}">
 
+    <!-- jQuery-2.2.4 js -->
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+    <script src="{{asset('assets/js/client/jquery/jquery-2.2.4.min.js')}}"></script>
+
+    {{-- Sweetalert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -40,8 +47,9 @@
     @include('layout.client.footer')
 
     <!-- ##### All Javascript Script ##### -->
-    <!-- jQuery-2.2.4 js -->
-    <script src="{{asset('assets/js/client/jquery/jquery-2.2.4.min.js')}}"></script>
+    {{-- My JS --}}
+    <script src="{{ asset('assets/js/main/client/index.js') }}"></script>
+
     <!-- Popper js -->
     <script src="{{asset('assets/js/client/bootstrap/popper.min.js')}}"></script>
     <!-- Bootstrap js -->

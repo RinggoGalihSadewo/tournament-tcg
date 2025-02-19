@@ -15,6 +15,16 @@ class AuthController extends Controller
         return view('auth.index');
     }
 
+    public function view_login_client()
+    {
+        return view('main.client.auth.login');
+    }
+
+    public function view_registration_client()
+    {
+        return view('main.client.auth.registration');
+    }
+
     public function registration()
     {
         return view('auth.registration');
@@ -44,12 +54,14 @@ class AuthController extends Controller
                         'status'    => 200,
                         'redirect'  => url('/admin/tcg')
                     ]);
+                }else {
+                    $request->session()->put('user', $data);
+                    return response()->json([
+                        'message'   => 'Berhasil Login!',
+                        'status'    => 200,
+                        'redirect'  => url('/')
+                    ]);
                 }
-                return response()->json([
-                    'message'   => 'Berhasil Login!',
-                    'status'    => 200,
-                    'redirect'  => url('/')
-                ]);
             } else {
                 return response()->json([
                     'message'   => 'Username atau Password salah!',
@@ -66,7 +78,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function createRegistration(Request $request)
+    public function create_registration(Request $request)
     {
         $request->validate([
             'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
@@ -116,6 +128,59 @@ class AuthController extends Controller
             'redirect' => '/login'
         ]);
     }
+
+    public function create_registration_client(Request $request)
+    {
+
+        $request->validate([
+            'file'              => ['file', 'mimes:jpeg,png,jpg,JPEG,PNG,JPG', 'max:2048'],
+            'username'              => ['required'],
+            'name'              => ['required'],
+            'email'             => ['required', 'email', 'unique:user,email'],
+            'password'          => ['required', 'min:8'],
+            'phone_number'          => ['required'],
+        ], [
+            'file.file'                    => 'Foto harus di isi!',
+            'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
+            'file.max'                     => 'Ukuran Foto maximal 2 MB!',
+            'username.required'            => 'Username wajib di isi!',
+            'name.required'                => 'Name wajib di isi!',
+            'email.required'               => 'Email wajib di isi!',
+            'email.email'                  => 'Email tidak sesuai!',
+            'email.unique'                 => 'Email sudah digunakan!',
+            'password.required'            => 'Password wajib di isi!',
+            'password.min'                 => 'Password minimal 8 karakter!',
+            'phone_number.required'        => 'Phone number wajib di isi!'
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file_name = 'client-' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('assets/img/profile/'), $file_name);
+        } else {
+            $file_name = 'default.jpg';
+        }
+
+        User::insert([
+            'username'      => $request->username,
+            'name'         => $request->name,
+            'email'         => $request->email,
+            'photo'         => $file_name,
+            'password'      => bcrypt($request->password),
+            'phone_number'  => $request->phone_number,
+            'address'       => $request->address,
+            'is_admin'      => false,
+            'created_at'    => date('Y-m-d'),
+            'updated_at'    => date('Y-m-d')
+        ]);
+
+        return response()->json([
+            'message'  => 'Tambah Data Berhasil',
+            'status'   => 200,
+            'redirect' => '/login'
+        ]);
+    }
+
 
     public function logout(Request $request)
     {

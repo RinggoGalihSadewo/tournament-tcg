@@ -23,22 +23,13 @@ $("#btnRegistration").click(() => {
     const data = new FormData(form);
 
     $.ajax({
-        url: "/registration",
+        url: "/registration-admin",
         type: "POST",
         dataType: "JSON",
         enctype: "multipart/form-data",
         processData: false,
         contentType: false,
         cache: false,
-        // data: {
-        //     _token: _token,
-        //     username: $("#username").val(),
-        //     name: $("#name").val(),
-        //     email: $("#email").val(),
-        //     password: $("#password").val(),
-        //     phone_number: $("#phone_number").val(),
-        //     address: $("#address").val(),
-        // },
         data,
         beforeSend: () => {
             $("#username").removeClass("is-invalid");
@@ -100,7 +91,7 @@ $("#btnLogin").click(() => {
     event.preventDefault();
 
     $.ajax({
-        url: "/login",
+        url: "/login-admin",
         type: "POST",
         dataType: "JSON",
         data: {

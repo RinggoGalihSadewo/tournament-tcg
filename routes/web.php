@@ -25,12 +25,17 @@ use App\Http\Controllers\ClientController;
 Route::get('/', [ClientController::class, 'index']);
 
 // Admin
-Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/login', [AuthController::class, 'view_login_client']);
+Route::get('/login-admin', [AuthController::class, 'index'])->name('login');
 
-Route::get('/registration', [AuthController::class, 'registration']);
-Route::post('/registration', [AuthController::class, 'createRegistration']);
+Route::get('/registration', [AuthController::class, 'view_registration_client']);
+Route::post('/registration', [AuthController::class, 'create_registration_client']);
+
+Route::get('/registration-admin', [AuthController::class, 'registration']);
+Route::post('/registration-admin', [AuthController::class, 'create_registration']);
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login-admin', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('web')->prefix('admin')->group(function () {

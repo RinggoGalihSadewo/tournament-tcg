@@ -26,7 +26,7 @@
         </div>
         <button class="btn btn-primary btn-block" type="submit" id="btnLogin">LOGIN</button>
         <div class="mt-4">
-          <a href="/registration"><b>REGISTRATION ACCOUNT</b></a>
+          <a href="/registration-admin"><b>REGISTRATION ACCOUNT</b></a>
         </div>
         <p class="mt-3 mb-3 text-muted">{{ config('app.name') }} © {{ date('Y') }}</p>
       </form>

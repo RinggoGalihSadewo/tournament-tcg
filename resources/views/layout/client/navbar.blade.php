@@ -8,7 +8,7 @@
                     <nav class="classy-navbar justify-content-between" id="oneMusicNav">
 
                         <!-- Nav brand -->
-                        <a href="index.html" class="nav-brand"><img src="{{ asset('assets/img/logo.png') }}" alt=""></a>
+                        <a href="/" class="nav-brand"><img src="{{ asset('assets/img/logo.png') }}" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -32,13 +32,19 @@
                                     <li><a href="blog.html">Deck Log</a></li>
                                 </ul>
 
+                                {{-- @if(Auth::user()->name) --}}
                                 <!-- Login/Register & Cart Button -->
                                 <div class="login-register-cart-button d-flex align-items-center">
                                     <!-- Login/Register -->
                                     <div class="login-register-btn mr-50">
-                                        <a href="login.html" id="loginBtn">Login / Register</a>
+                                        @if(session()->has('user'))
+                                        <a href="/my-profile">My Profile</a>
+                                        @else
+                                        <a href="/login" id="loginBtn">Login / Register</a>
+                                        @endif
                                     </div>
                                 </div>
+                                {{-- @endif --}}
                             </div>
                             <!-- Nav End -->
 
