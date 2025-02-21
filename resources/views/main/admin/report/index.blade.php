@@ -6,7 +6,18 @@
 
 <div class="d-flex justify-content-between">
     <h2 class="mb-2 page-title">Data Report Tournament</h2>
-    <a href="/admin/report/download-pdf" class="btn mb-2 btn-primary">Download Report</a>
+    <div class="row">
+      <div class="col-7">
+        <select class="form-control" id="tournament" name="tournament" placeholder="Tournament" style="width: 100%" value="{{ $tournaments[0]->id_tournament }}">
+          @foreach($tournaments as $key => $tournament)
+          <option value="{{$tournament->id_tournament}}">{{ $tournament->name_tournament }}</option>
+          @endforeach
+        </select>
+      </div>
+      <div class="col-5">
+        <a id="downloadBtn" href="/admin/report/download-pdf/{{$tournaments[0]->id_tournament}}" class="btn mb-2 btn-primary w-100">Download</a>
+      </div>
+  </div>
 </div>
 <div class="row my-4">
   <!-- Small table -->

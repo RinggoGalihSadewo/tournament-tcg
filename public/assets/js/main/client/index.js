@@ -15,6 +15,29 @@ $("#file").change(function (event) {
     reader.readAsDataURL(this.files[0]);
 });
 
+$(document).ready(function () {
+    // Tangani perubahan pada dropdown filter
+    $("#tournament").on("change", function () {
+        var selectedTournament = $(this).val(); // Ambil ID tournament yang dipilih
+
+        // Jika ada ID tournament yang dipilih
+        if (selectedTournament) {
+            // Menampilkan hanya tournament yang sesuai dengan id_tournament yang dipilih
+            $(".tournament-item").each(function () {
+                var tournamentId = $(this).attr("id").split("-")[1]; // Ambil id_tournament dari id element
+                if (tournamentId === selectedTournament) {
+                    $(this).show(); // Tampilkan tournament yang sesuai
+                } else {
+                    $(this).hide(); // Sembunyikan tournament yang tidak sesuai
+                }
+            });
+        } else {
+            // Jika tidak ada filter yang dipilih, tampilkan semua tournament
+            $(".tournament-item").show();
+        }
+    });
+});
+
 if (window.location.pathname === "/deck-log") {
     $(document).on("change", ".file-input", function (event) {
         let index = $(this).data("index"); // Ambil index dari data-index

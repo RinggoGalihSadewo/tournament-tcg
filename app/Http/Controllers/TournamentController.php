@@ -33,10 +33,11 @@ class TournamentController extends Controller
     }
 
     public function view_tournament_client()
-    {
+    {   
+        $tournaments_all = Tournament::all();
         $tournaments = Tournament::where('status_tournament', 'active')->with('registration')->get();
 
-        return view('main.client.tournament.index', compact('tournaments'));
+        return view('main.client.tournament.index', compact('tournaments_all'), compact('tournaments'));
     }
 
     public function view_my_events_client()

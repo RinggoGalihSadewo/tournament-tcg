@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Ranking;
+use App\Models\Tournament;
 
 use Illuminate\Http\Request;
 
@@ -17,7 +18,9 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return view('main.admin.report.index');
+        $tournaments = Tournament::all();
+
+        return view('main.admin.report.index', compact('tournaments'));
     }
 
     public function get_data_report()
@@ -34,10 +37,27 @@ class ReportController extends Controller
         ]);
     }
 
-    public function download_pdf()
+    public function get_data_report_filter(Request $request)
+    {
+
+        $data = Ranking::selectRaw('id_user, SUM(poin) as total_poin')
+        ->where('id_tournament', $request->id_tournament)
+        ->groupBy('id_user')
+        ->orderByDesc('total_poin') // Mengurutkan berdasarkan total poin terbesar ke terkecil
+        ->with(['user']) // Menambahkan relasi user untuk mengambil data user terkait
+        ->get();
+
+        return response()->json([
+            'data'      => $data,
+            'status'    => 200
+        ]);
+    }
+
+    public function download_pdf($id_tournament)
     {
         // Ambil data ranking dari database, sudah diurutkan dan dihitung total poin
         $data = Ranking::with('user')
+            ->where('id_tournament', $id_tournament)
             ->selectRaw('id_user, SUM(poin) as total_poin')
             ->groupBy('id_user')
             ->orderByDesc('total_poin')

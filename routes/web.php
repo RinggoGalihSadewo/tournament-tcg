@@ -64,7 +64,8 @@ Route::middleware('web')->prefix('admin')->group(function () {
     Route::resource('/tournament-participants', TournamentParticipantController::class);
     Route::post('/tournament-participants/get-data-tournament-participant', [TournamentParticipantController::class, 'get_data_tournament_participant']);
 
-    Route::get('/report/download-pdf', [ReportController::class, 'download_pdf']);
+    Route::get('/report/download-pdf/{id_tournament}', [ReportController::class, 'download_pdf']);
     Route::post('/report/get-data-report', [ReportController::class, 'get_data_report']);
+    Route::post('/report/get-data-report-filter', [ReportController::class, 'get_data_report_filter']);
     Route::resource('/report', ReportController::class);
 });
