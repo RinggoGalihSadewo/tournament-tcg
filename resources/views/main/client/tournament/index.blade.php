@@ -35,7 +35,7 @@
                 <div class="col-12 col-md-6 col-lg-4 tournament-item" id="tournament-{{ $tournament->id_tournament }}"> <!-- Gunakan ID tournament sebagai bagian dari ID element -->
                     <div class="single-event-area mb-30">
                         <div class="event-thumbnail">
-                            <img src="{{ asset('assets/img/tournament/' . $tournament->photo_tournament) }}" alt="">
+                            <img src="{{ asset('assets/img/tournament/' . $tournament->photo_tournament) }}" alt="" style="height: 400px; width: 100%; object-fit: cover;">
                         </div>
                         <div class="event-text">
                             <h4>{{ $tournament->name_tournament }}</h4>

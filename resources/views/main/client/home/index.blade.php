@@ -25,7 +25,75 @@
           </div>
       </div>
 
-      <!-- Single Hero Slide -->
+      <div class="single-hero-slide d-flex align-items-center justify-content-center">
+        <!-- Slide Img -->
+        <div class="slide-img bg-img" style="background-image: url({{asset('assets/img/client/bg-img/bg-2.jpeg')}});"></div>
+        <!-- Slide Content -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="hero-slides-content text-center">
+                        <h6 data-animation="fadeInUp" data-delay="100ms">Tournament</h6>
+                        <h2 data-animation="fadeInUp" data-delay="300ms">WIN STREAX <span>WIN STREAX</span></h2>
+                        <a data-animation="fadeInUp" data-delay="500ms" href="/tournaments" class="btn oneMusic-btn mt-50">See All Tournament <i class="fa fa-angle-double-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="single-hero-slide d-flex align-items-center justify-content-center">
+            <!-- Slide Img -->
+            <div class="slide-img bg-img" style="background-image: url({{asset('assets/img/client/bg-img/bg-3.jpeg')}});"></div>
+            <!-- Slide Content -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="hero-slides-content text-center">
+                            <h6 data-animation="fadeInUp" data-delay="100ms">Tournament</h6>
+                            <h2 data-animation="fadeInUp" data-delay="300ms">WIN STREAX <span>WIN STREAX</span></h2>
+                            <a data-animation="fadeInUp" data-delay="500ms" href="/tournaments" class="btn oneMusic-btn mt-50">See All Tournament <i class="fa fa-angle-double-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="single-hero-slide d-flex align-items-center justify-content-center">
+                <!-- Slide Img -->
+                <div class="slide-img bg-img" style="background-image: url({{asset('assets/img/client/bg-img/bg-4.jpeg')}});"></div>
+                <!-- Slide Content -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="hero-slides-content text-center">
+                                <h6 data-animation="fadeInUp" data-delay="100ms">Tournament</h6>
+                                <h2 data-animation="fadeInUp" data-delay="300ms">WIN STREAX <span>WIN STREAX</span></h2>
+                                <a data-animation="fadeInUp" data-delay="500ms" href="/tournaments" class="btn oneMusic-btn mt-50">See All Tournament <i class="fa fa-angle-double-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="single-hero-slide d-flex align-items-center justify-content-center">
+                    <!-- Slide Img -->
+                    <div class="slide-img bg-img" style="background-image: url({{asset('assets/img/client/bg-img/bg-5.jpeg')}});"></div>
+                    <!-- Slide Content -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="hero-slides-content text-center">
+                                    <h6 data-animation="fadeInUp" data-delay="100ms">Tournament</h6>
+                                    <h2 data-animation="fadeInUp" data-delay="300ms">WIN STREAX <span>WIN STREAX</span></h2>
+                                    <a data-animation="fadeInUp" data-delay="500ms" href="/tournaments" class="btn oneMusic-btn mt-50">See All Tournament <i class="fa fa-angle-double-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+      {{-- <!-- Single Hero Slide -->
       <div class="single-hero-slide d-flex align-items-center justify-content-center">
           <!-- Slide Img -->
           <div class="slide-img bg-img" style="background-image: url({{asset('assets/img/client/bg-img/bg-2.jpg')}});"></div>
@@ -41,7 +109,7 @@
                   </div>
               </div>
           </div>
-      </div>
+      </div> --}}
   </div>
 </section>
 <!-- ##### Hero Area End ##### -->
