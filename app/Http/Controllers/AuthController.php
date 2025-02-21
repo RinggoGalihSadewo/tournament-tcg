@@ -137,7 +137,7 @@ class AuthController extends Controller
         return response()->json([
             'message'  => 'Tambah Data Berhasil',
             'status'   => 200,
-            'redirect' => '/login'
+            'redirect' => '/login-admin'
         ]);
     }
 

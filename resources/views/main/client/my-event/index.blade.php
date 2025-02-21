@@ -17,7 +17,6 @@
 <section class="events-area section-padding-100">
     <div class="container">
         <div class="row">
-
             @foreach($tournaments as $tournament)
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="single-event-area mb-30">
@@ -35,7 +34,7 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+            @endforeach
         </div>
 
     </div>

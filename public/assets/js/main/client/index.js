@@ -15,6 +15,20 @@ $("#file").change(function (event) {
     reader.readAsDataURL(this.files[0]);
 });
 
+if (window.location.pathname === "/deck-log") {
+    $(document).on("change", ".file-input", function (event) {
+        let index = $(this).data("index"); // Ambil index dari data-index
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            // Set preview gambar berdasarkan index
+            $(".preview[data-index='" + index + "']")
+                .attr("src", e.target.result)
+                .removeClass("d-none");
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
+}
+
 // Registration
 $("#btnRegistration").click(() => {
     event.preventDefault();
@@ -341,3 +355,102 @@ $("#btnUpdateProfile").click(() => {
         },
     });
 });
+
+// deck log
+$(document).on("change", ".file-input", function (event) {
+    const index = $(this).data("index");
+    const form = $("#form_deck_log_" + index)[0];
+    const data = new FormData(form);
+
+    $.ajax({
+        url: "/deck-log",
+        type: "POST",
+        dataType: "JSON",
+        enctype: "multipart/form-data",
+        processData: false,
+        contentType: false,
+        cache: false,
+        data: data,
+        success: (res) => {
+            if (res.status === 200) {
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: res.message,
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+
+                setTimeout(() => {
+                    location.href = res.redirect;
+                }, 2000);
+            } else if (res.status === 401) {
+                Swal.fire({
+                    title: "Gagal!",
+                    text: res.message,
+                    icon: "error",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 422) {
+                var errors = jqXHR.responseJSON.errors;
+                $.each(errors, function (key, val) {
+                    $("#" + key).addClass("is-invalid");
+                    $("." + key).text(val[0]);
+                });
+            }
+        },
+    });
+});
+
+// Hapus TCG
+hapusDeckLog = (id) => {
+    Swal.fire({
+        title: "Apakah anda yakin ingin?",
+        text: "Proses ini akan menghapus data secara permanent!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "rgb(0, 59, 95)",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, hapus!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/deck-log/${id}`,
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    _token: _token,
+                    _method: "DELETE",
+                    id: id,
+                },
+                success: (res) => {
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: res.message,
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                    setTimeout(() => {
+                        location.href = res.redirect;
+                    }, 2000);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    Swal.fire({
+                        title: "Maaf data gagal di hapus!",
+                        html: `Silahkan Cek kembali Kode Error: <strong>${
+                            jqXHR.status + "\n"
+                        }</strong> `,
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                },
+            });
+        }
+    });
+};

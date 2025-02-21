@@ -16,12 +16,12 @@
         @endif
         <div class="form-group">
           <label for="email" class="sr-only">Email</label>
-          <input type="email" id="email" class="form-control form-control" name="email" placeholder="Email" required="" autofocus="" value="ringgo@gmail.com">
+          <input type="email" id="email" class="form-control form-control" name="email" placeholder="Email" required="" autofocus="" value="admin@gmail.com">
           <div class="invalid-feedback text-left email"></div>
         </div>
         <div class="form-group">
           <label for="password" class="sr-only">Password</label>
-          <input type="password" id="password" class="form-control form-control" name="password" placeholder="Password" required="" value="ringgo12345678">
+          <input type="password" id="password" class="form-control form-control" name="password" placeholder="Password" required="" value="12345678">
           <div class="invalid-feedback text-left password"></div>
         </div>
         <button class="btn btn-primary btn-block" type="submit" id="btnLogin">LOGIN</button>

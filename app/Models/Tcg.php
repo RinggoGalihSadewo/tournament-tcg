@@ -20,6 +20,7 @@ class Tcg extends Model
 
     public function decklog()
     {
-        return $this->hasOne(Decklog::class);
+        return $this->hasMany(Decklog::class, 'id_tcg');
     }
+    
 }

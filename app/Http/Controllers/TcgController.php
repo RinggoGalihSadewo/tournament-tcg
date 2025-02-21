@@ -117,7 +117,11 @@ class TcgController extends Controller
 
     public function destroy($id)
     {
+
+        dd($id);
         $data_old = Tcg::find($id);
+
+
 
         if ($data_old['photo_tcg'] != 'no-image.png') {
             unlink(public_path('assets/img/tcg/' . $data_old['photo_tcg']));
