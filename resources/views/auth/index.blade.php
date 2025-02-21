@@ -11,9 +11,6 @@
         <a class="navbar-brand mx-auto mt-2 flex-fill text-center mb-3" href="{{ url('/') }}">
           <img src="{{ asset('assets/img/logo.png') }}" alt="" width="250px">
         </a>
-        @if(session()->has('user'))
-          <p>Welcome, {{ session('user')->name }}!</p>
-        @endif
         <div class="form-group">
           <label for="email" class="sr-only">Email</label>
           <input type="email" id="email" class="form-control form-control" name="email" placeholder="Email" required="" autofocus="" value="admin@gmail.com">
