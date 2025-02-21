@@ -150,22 +150,107 @@ $(document.body).on("change", "#tournament", function () {
     });
 });
 
+// $(document).ready(function () {
+//     $("#btnAddToRank").on("click", function () {
+//         let participants = [];
+//         let totalPairs = 4;
+//         let points = 10; // Set poin untuk semua peserta
+
+//         // Ambil nilai dari setiap select input
+//         for (let i = 0; i < totalPairs; i++) {
+//             let winnerName = $("#winner-" + i).val(); // Ambil nama peserta dari select
+//             if (winnerName) {
+//                 participants.push(winnerName);
+//             }
+//         }
+
+//         // Pastikan ada peserta yang dipilih
+//         if (participants.length < totalPairs) {
+//             Swal.fire({
+//                 title: "Gagal!",
+//                 text: "Pastikan semua peserta terpilih!",
+//                 icon: "error",
+//                 showConfirmButton: false,
+//                 timer: 2000,
+//             });
+//             return;
+//         }
+
+//         // Menambahkan atau mengupdate data ke dalam tabel "Standing Ranking"
+//         let tableBody = $(".datatables tbody");
+
+//         // Cek jika jumlah baris dalam tabel sudah mencapai 4
+//         if (tableBody.find("tr").length >= 4) {
+//             // Hapus data paling atas jika sudah ada 4 baris
+//             tableBody.find("tr:first").remove();
+//         }
+
+//         participants.forEach((participant, index) => {
+//             let rowFound = false;
+
+//             // Cek apakah peserta sudah ada di dalam tabel
+//             tableBody.find("tr").each(function () {
+//                 let existingName = $(this).find("td").eq(0).text(); // Ambil nama peserta dari kolom kedua
+
+//                 if (existingName === participant) {
+//                     // Jika peserta sudah ada, update poin
+//                     $(this).find("td").eq(1).text(points); // Update poin di kolom ketiga
+//                     rowFound = true;
+//                     return false; // Stop the loop
+//                 }
+//             });
+
+//             // Jika peserta belum ada, tambahkan ke tabel
+//             if (!rowFound) {
+//                 let row = `<tr>
+//                             <td>${participant}</td>
+//                             <td>${points}</td>
+//                            </tr>`;
+//                 tableBody.append(row);
+//             }
+//         });
+
+//         // Setelah data ditambahkan atau diupdate, reset form select
+//         // for (let i = 0; i < totalPairs; i++) {
+//         //     $("#winner-" + i).val(""); // Reset select input
+//         // }
+
+//         Swal.fire({
+//             title: "Berhasil!",
+//             text: "Data berhasil ditambahkan atau diupdate di ranking!",
+//             icon: "success",
+//             showConfirmButton: false,
+//             timer: 2000,
+//         });
+//     });
+// });
+
 $(document).ready(function () {
     $("#btnAddToRank").on("click", function () {
         let participants = [];
-        let totalPairs = 4;
-        let points = 10; // Set poin untuk semua peserta
+        let totalPairs = 4; // Total number of pairs
+        let winnerPoints = 10; // Points for the winners
+        let loserPoints = 5; // Points for the losers
 
-        // Ambil nilai dari setiap select input
+        // Iterate through all the pairs
         for (let i = 0; i < totalPairs; i++) {
-            let winnerName = $("#winner-" + i).val(); // Ambil nama peserta dari select
+            let winnerName = $("#winner-" + i).val(); // Get the winner's name
+            let participantA = $("#participant-" + i + "-a").val(); // Get the name of participant A
+            let participantB = $("#participant-" + i + "-b").val(); // Get the name of participant B
+
+            // Ensure a winner is selected for each pair
             if (winnerName) {
-                participants.push(winnerName);
+                let loserName =
+                    winnerName === participantA ? participantB : participantA; // Get the loser
+
+                // Add the winner and loser to the participants array
+                participants.push({ name: winnerName, points: winnerPoints });
+                participants.push({ name: loserName, points: loserPoints });
             }
         }
 
-        // Pastikan ada peserta yang dipilih
-        if (participants.length < totalPairs) {
+        // Make sure all participants are selected
+        if (participants.length < totalPairs * 2) {
             Swal.fire({
                 title: "Gagal!",
                 text: "Pastikan semua peserta terpilih!",
@@ -176,45 +261,41 @@ $(document).ready(function () {
             return;
         }
 
-        // Menambahkan atau mengupdate data ke dalam tabel "Standing Ranking"
+        // Add or update participants in the Standing Ranking table
         let tableBody = $(".datatables tbody");
 
-        // Cek jika jumlah baris dalam tabel sudah mencapai 4
-        if (tableBody.find("tr").length >= 4) {
-            // Hapus data paling atas jika sudah ada 4 baris
-            tableBody.find("tr:first").remove();
-        }
-
-        participants.forEach((participant, index) => {
+        participants.forEach((participant) => {
             let rowFound = false;
 
-            // Cek apakah peserta sudah ada di dalam tabel
+            // Check if the participant is already in the ranking table
             tableBody.find("tr").each(function () {
-                let existingName = $(this).find("td").eq(0).text(); // Ambil nama peserta dari kolom kedua
+                let existingName = $(this).find("td").eq(0).text(); // Get the name from the first column
 
-                if (existingName === participant) {
-                    // Jika peserta sudah ada, update poin
-                    $(this).find("td").eq(1).text(points); // Update poin di kolom ketiga
+                if (existingName === participant.name) {
+                    // If the participant is already in the table, update the points
+                    let currentPoints = parseInt(
+                        $(this).find("td").eq(1).text()
+                    ); // Get current points
+                    $(this)
+                        .find("td")
+                        .eq(1)
+                        .text(currentPoints + participant.points); // Update points
                     rowFound = true;
-                    return false; // Stop the loop
+                    return false; // Exit the loop early
                 }
             });
 
-            // Jika peserta belum ada, tambahkan ke tabel
+            // If the participant is not found, add them to the table
             if (!rowFound) {
                 let row = `<tr>
-                            <td>${participant}</td>
-                            <td>${points}</td>
+                            <td>${participant.name}</td>
+                            <td>${participant.points}</td>
                            </tr>`;
                 tableBody.append(row);
             }
         });
 
-        // Setelah data ditambahkan atau diupdate, reset form select
-        // for (let i = 0; i < totalPairs; i++) {
-        //     $("#winner-" + i).val(""); // Reset select input
-        // }
-
+        // After adding or updating the ranking, show success message
         Swal.fire({
             title: "Berhasil!",
             text: "Data berhasil ditambahkan atau diupdate di ranking!",
