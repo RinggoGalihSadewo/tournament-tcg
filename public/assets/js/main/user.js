@@ -117,6 +117,7 @@ modalEditTournamentParticipant = (id, isDetail) => {
         type: "GET",
         dataType: "JSON",
         success: (res) => {
+            console.log(JSON.stringify(res.data));
             switch (res.status) {
                 case 200:
                     $("#modalTournamentParticipant").modal("show");
@@ -187,6 +188,11 @@ modalEditTournamentParticipant = (id, isDetail) => {
                         .prop("disabled", isDetail)
                         .val(res.data.registration.tournament.id_tournament)
                         .removeClass("is-invalid");
+
+                    $("#status_payment")
+                        .prop("disabled", isDetail)
+                        .val(res.data.registration.status_payment)
+                        .removeClass("is-invalid");
                     break;
                 case 401:
                     Swal.fire({
@@ -227,6 +233,7 @@ $(document.body).on("click", "#btnTambahTournamentParticipant", function () {
     fd.append("password", $("#password").val());
     fd.append("phone_number", $("#phone_number").val());
     fd.append("tournament", $("#tournament").val());
+    fd.append("status_payment", $("#status_payment").val());
 
     $.ajax({
         url: "/admin/tournament-participants",
@@ -253,6 +260,9 @@ $(document.body).on("click", "#btnTambahTournamentParticipant", function () {
 
             $("#tournament").removeClass("is-invalid");
             $(".tournament").empty();
+
+            $("#status_payment").removeClass("is-invalid");
+            $(".status_payment").empty();
         },
         success: (res) => {
             switch (res.status) {
@@ -312,6 +322,7 @@ $(document.body).on("click", "#btnUpdateTournamentParticipants", function () {
     fd.append("phone_number", $("#phone_number").val());
     fd.append("address", $("#address").val());
     fd.append("tournament", $("#tournament").val());
+    fd.append("status_payment", $("#status_payment").val());
 
     $.ajax({
         url: `/admin/tournament-participants/${id}`,
@@ -338,6 +349,9 @@ $(document.body).on("click", "#btnUpdateTournamentParticipants", function () {
 
             $("#tournament").removeClass("is-invalid");
             $(".tournament").empty();
+
+            $("#status_payment").removeClass("is-invalid");
+            $(".status_payment").empty();
         },
         success: (res) => {
             switch (res.status) {

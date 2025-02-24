@@ -57,6 +57,18 @@
                   </div>
               </div>
               <div class="form-group mb-3">
+                <label for="status_payment">Status Payment</label>
+                <select class="form-control" id="status_payment" name="status_payment" placeholder="status_payment" >
+                  <option disabled>--Choose Status Payment--</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Failed">Failed</option>
+                  <option value="Cancelled">Cancelled</option>
+                  <option value="Refunded">Refunded</option>
+                </select>
+                <div class="invalid-feedback text-left status_payment"></div>
+              </div>
+              <div class="form-group mb-3">
                 <label for="tournament">Tournament</label>
                 <select class="form-control" id="tournament" name="tournament" placeholder="Tournament" >
                   <option disabled>--Choose Tournament--</option>

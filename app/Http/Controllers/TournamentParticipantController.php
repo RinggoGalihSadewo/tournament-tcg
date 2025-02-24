@@ -185,6 +185,7 @@ class TournamentParticipantController extends Controller
 
         Registration::insert([
             'username'                   => $request->username,
+            'status_payment'             => $request->status_payment,
             'date_registration'          => date('Y-m-d'),
             'id_tournament'              => $request->tournament,
             'id_user'                    => $user_id,
@@ -286,6 +287,7 @@ class TournamentParticipantController extends Controller
             'password'          => ['required', 'min:8'],
             'phone_number'          => ['required'],
             'tournament'          => ['required','exists:tournament,id_tournament'],
+            'status_payment'              => ['required'],
         ], [
             // 'file.file'                    => 'Foto harus di isi!',
             // 'file.mimes'                   => 'Foto harus bertipe jpeg/png/jpg!',
@@ -299,6 +301,7 @@ class TournamentParticipantController extends Controller
             'phone_number.required'        => 'Phone number wajib di isi!',
             'tournament.required'          => 'Tournament wajib di isi!',
             'tournament.exists'            => 'Tournament tidak valid!',
+            'status_payment.required'      => 'Status payment wajib di isi!',
         ]);
 
 
@@ -316,18 +319,19 @@ class TournamentParticipantController extends Controller
         }
 
         User::where('id_user', $request->id)->update([
-            'username'      => $request->username,
-            'name'          => $request->name,
-            // 'email'         => $request->email,
-            'photo'         => $file_name,
-            // 'password'      => bcrypt($request->password),
-            'phone_number'  => $request->phone_number,
-            'address'       => $request->address,
-            'updated_at'    => date('Y-m-d')
+            'username'          => $request->username,
+            'name'              => $request->name,
+            // 'email'          => $request->email,
+            'photo'             => $file_name,
+            // 'password'       => bcrypt($request->password),
+            'phone_number'      => $request->phone_number,
+            'address'           => $request->address,
+            'updated_at'        => date('Y-m-d')
         ]);
 
         Registration::where('id_user', $request->id)->update([
             'username'                   => $request->username,
+            'status_payment'             => $request->status_payment,
             'id_tournament'              => $request->tournament,
             'updated_at'                 => date('Y-m-d')
         ]);
