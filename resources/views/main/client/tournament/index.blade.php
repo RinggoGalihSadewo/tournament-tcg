@@ -20,12 +20,18 @@
             <div class="col-12 mx-auto">
                 <center>
                     <div>
-                        <select class="form-control" id="tournament" name="tournament" placeholder="Tournament" style="width: 50%;">
+                        {{-- <select class="form-control" id="tournament" name="tournament" placeholder="Tournament" style="width: 50%;">
                             <option value="" disabled selected>---Filter---</option> <!-- Filter pilihan default -->
                             @foreach($tournaments_all as $key => $tournament)
                                 <option value="{{$tournament->id_tournament}}">{{ $tournament->name_tournament }}</option>
                             @endforeach
-                        </select>
+                        </select> --}}
+                        <div style="row">
+                            <div class="col-5">
+                                <label for="search" class="sr-only">Search</label>
+                                <input type="text" id="search" class="form-control form-control" name="search" placeholder="Search Tournament" required="" autofocus="">
+                            </div>
+                        </div>
                     </div>
                 </center>
             </div>

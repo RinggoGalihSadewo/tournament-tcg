@@ -54,6 +54,28 @@ class TournamentController extends Controller
         return view('main.client.my-event.index', compact('tournaments'));
     }
     
+    public function search_tournament(Request $request)
+    {
+        $search = $request->search;
+
+        $tournaments_all = Tournament::all();
+        
+        if($search !== ''){
+            $tournaments = Tournament::where('status_tournament', 'active')
+            ->where('name_tournament', 'like', '%' . $search . '%') // Menambahkan pencarian berdasarkan nama
+            ->with('registration') // Tetap load relasi 'registration'
+            ->get();
+        }else {
+            $tournaments = Tournament::where('status_tournament', 'active')->with('registration')->get();
+        }
+    
+        // return view('main.client.tournament.index', compact('tournaments_all'), compact('tournaments'));
+        return response()->json([
+            'data'      => $tournaments,
+            'status'    => 200
+        ]);
+    }
+
 
     /**
      * Show the form for creating a new resource.

@@ -32,6 +32,7 @@ Route::get('/registration', [AuthController::class, 'view_registration_client'])
 Route::post('/registration', [AuthController::class, 'create_registration_client']);
 
 Route::get('/tournaments', [TournamentController::class, 'view_tournament_client']);
+Route::post('/tournaments/search', [TournamentController::class, 'search_tournament']);
 Route::post('/tournaments', [TournamentParticipantController::class, 'regis_tournament_client']);
 
 Route::get('/my-events', [TournamentController::class, 'view_my_events_client']);

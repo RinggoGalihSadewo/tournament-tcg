@@ -36,6 +36,76 @@ $(document).ready(function () {
             $(".tournament-item").show();
         }
     });
+
+    let debounceTimeout;
+
+    $("#search").on("input", function () {
+        var key = $(this).val(); // Ambil nilai input
+        console.log(key); // Anda dapat mengganti alert() dengan log untuk debugging
+
+        // Clear timeout sebelumnya jika ada, dan set timeout baru
+        clearTimeout(debounceTimeout);
+
+        // Set timeout untuk menunggu pengguna selesai mengetik (500ms)
+        debounceTimeout = setTimeout(function () {
+            // Panggil fungsi pencarian setelah 500ms
+            $.ajax({
+                url: "/tournaments/search",
+                type: "POST",
+                data: {
+                    _token,
+                    search: key,
+                },
+                success: (res) => {
+                    if (res.status === 200) {
+                        // Misalnya, ganti konten div #tournaments-container
+                        var tournaments = res.data; // Pastikan server mengirimkan data dalam bentuk ini
+
+                        console.log(tournaments);
+
+                        // Clear kontainer dan tampilkan hasil baru
+                        var tournamentsContainer = $("#tournaments-container");
+                        tournamentsContainer.empty(); // Kosongkan kontainer sebelumnya
+
+                        // Loop untuk menampilkan hasil pencarian
+                        tournaments.forEach(function (tournament) {
+                            // Gunakan Blade untuk menangani URL gambar di luar template literal
+                            var imageUrl =
+                                "/assets/img/tournament//" +
+                                tournament.photo_tournament;
+
+                            tournamentsContainer.append(`
+                            <div class="col-12 col-md-6 col-lg-4 tournament-item" id="tournament-${tournament.id_tournament}">
+                                <div class="single-event-area mb-30">
+                                    <div class="event-thumbnail">
+                                        <img src="${imageUrl}" alt="" style="height: 400px; width: 100%; object-fit: cover;">
+                                    </div>
+                                    <div class="event-text">
+                                        <h4>${tournament.name_tournament}</h4>
+                                        <div class="event-meta-data">
+                                            <p>${tournament.date_tournament}</p>
+                                        </div>
+                                        <p>${tournament.description_tournament}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status == 422) {
+                        var errors = jqXHR.responseJSON.errors;
+
+                        $.each(errors, function (key, val) {
+                            $("#" + key).addClass("is-invalid");
+                            $("." + key).text(val[0]);
+                        });
+                    }
+                },
+            });
+        }, 500); // 500ms bisa diubah sesuai kebutuhan
+    });
 });
 
 if (window.location.pathname === "/deck-log") {
