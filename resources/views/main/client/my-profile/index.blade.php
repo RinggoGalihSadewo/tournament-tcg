@@ -19,8 +19,22 @@
         <div class="row justify-content-center">
             <div class="col-12 col-lg-8">
                 <div class="login-content">
-                    <!-- Login Form -->
-                    <div class="login-form">
+
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">History Tournament</a>
+                    </li>
+                  </ul>
+
+                  <!-- Tab content -->
+                  <div class="tab-content" id="myTabContent" style="margin-top:20px">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                      <!-- Login Form -->
+                      <div class="login-form">
                         <form action="" method="post" id="form_update_my_profile" enctype="multipart/form-data">
                           <input type="hidden" id="id_user" value="{{ $user->id_user }}"/>
                             <div class="d-flex justify-content-center">
@@ -70,6 +84,28 @@
                             <button type="submit" class="btn oneMusic-btn btn-2 m-2 mt-30" id="btnUpdateProfile">Update Profile</button>
                         </form>
                     </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Tournament</th>
+                            <th scope="col">Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @foreach($tournaments as $tournament)
+                          <tr>
+                            <th scope="row">{{ $loop->iteration }}</th>
+                            <td>{{ $tournament->name_tournament }}</td>
+                            <td>{{ \Carbon\Carbon::parse($tournament->date_tournament)->format('F d, Y') }}</td>
+                          </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>

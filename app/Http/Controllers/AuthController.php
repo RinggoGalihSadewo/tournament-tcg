@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Registration;
+use App\Models\Tournament;
 
 use Illuminate\Support\Str;
 
@@ -26,8 +27,15 @@ class AuthController extends Controller
         $id_user = Auth::user()->id_user;
 
         $user = User::find($id_user);
+    
+        $tournaments = Tournament::where('status_tournament', 'active')
+            ->whereHas('registration', function($query) use ($id_user) {
+                $query->where('id_user', $id_user);
+            })
+            ->with('registration') 
+            ->get();
 
-        return view('main.client.my-profile.index', compact('user'));
+        return view('main.client.my-profile.index', compact('user', 'tournaments'));
     }
 
     public function view_registration_client()
