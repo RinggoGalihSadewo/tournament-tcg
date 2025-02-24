@@ -137,9 +137,9 @@ class DeckLogController extends Controller
     {
         $data_old = Decklog::where('id_tcg', $id)->first();
 
-        if ($data_old && $data_old->photo != 'no-image.jpg') {
-            unlink(public_path('assets/img/deckLog/' . $data_old->photo));
-        }
+        // if ($data_old && $data_old->photo != 'no-image.jpg') {
+        //     unlink(public_path('assets/img/deckLog/' . $data_old->photo));
+        // }
         
         Decklog::where('id_tcg', $id)->delete();
         
