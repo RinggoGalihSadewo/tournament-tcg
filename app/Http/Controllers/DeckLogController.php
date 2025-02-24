@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tcg;
 use App\Models\User;
 use App\Models\Decklog;
+use App\Models\Tournament;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,19 +23,19 @@ class DeckLogController extends Controller
     public function index()
     {
         $username = Auth::user()->username;
+
+        $tcgs = Tcg::all();
+        $decklogs = Decklog::all();
+
+        foreach ($tcgs as $tcg) {
+            $filteredDecklogs = $decklogs->where('id_tcg', $tcg->id_tcg)
+                ->where('username', $username) 
+                ->sortByDesc('created_at') 
+                ->values(); 
+
+            $tcg->decklog = $filteredDecklogs;
+        }
     
-        $tcgs = Tcg::whereHas('decklog', function($query) use ($username) {
-            $query->where('username', $username);
-        })
-        ->orWhereDoesntHave('decklog') 
-        ->with(['decklog' => function ($query) {
-            $query->orderBy('created_at', 'desc');
-        }])
-        ->get();
-
-        // return response()->json($tcgs);
-                    
-
         return view('main.client.deck-log.index', compact('tcgs'));
     }
     

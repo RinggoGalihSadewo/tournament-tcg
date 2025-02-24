@@ -25,6 +25,6 @@ class Tournament extends Model
 
     public function tcg()
     {
-        return $this->belongsTo(Tcg::class);
+        return $this->belongsTo(Tcg::class, 'id_tcg');
     }
 }

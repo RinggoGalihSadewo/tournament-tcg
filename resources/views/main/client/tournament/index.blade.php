@@ -59,12 +59,14 @@
                                 @if($isRegistered)
                                     <p>You are already registered for this tournament.</p>
                                 @else
-                                    <p class="btn see-more-btn" id="btnRegisTournament"
+                                    <button class="btn see-more-btn" id="btnRegisTournament"
                                         data-id-user="{{ Auth::user()->id_user }}"
                                         data-username="{{ Auth::user()->username }}"
-                                        data-id-tournament="{{ $tournament->id_tournament }}">
+                                        data-id-tournament="{{ $tournament->id_tournament }}"
+                                        style="color: black; padding-left: 8px; border-radius: 5px;"
+                                        >
                                         Regis Tournament
-                                    </p>
+                                    </button>
                                 @endif
                             @else
                                 <a href="/login" class="see-more-btn">Not logged in yet</a>

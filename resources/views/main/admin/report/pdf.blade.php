@@ -47,9 +47,9 @@
         </tbody>
     </table>
 
-    <div style="margin-left: 750px;text-align: center; margin-top: 15px;">
+    <div style="margin-left: 750px;text-align: center; margin-top: 0px;">
         <p>Bandar Lampung, {{ \Carbon\Carbon::now()->format('d F Y') }}</p>
-        <div style="height: 80px"></div>
+        <div style="height: 30px"></div>
         <p>{{ Auth::user()->name }}</p>
     </div>
 </body>

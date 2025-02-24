@@ -21,21 +21,17 @@ $(document).ready(() => {
             $.ajax({
                 url: "/admin/report/get-data-report-filter/", // URL endpoint backend
                 type: "POST",
+                serverSide: true,
                 data: {
                     _token: _token, // Pastikan _token ada untuk keamanan
                     id_tournament: selectedTournament, // Kirim id tournament yang dipilih
                 },
                 success: function (response) {
-                    // Jika request sukses dan data ditemukan
-                    if (response.status === 200) {
-                        // Hapus data lama dan masukkan data baru ke dalam DataTable
-                        var table = $("#dataTable-1").DataTable();
-                        table.clear(); // Menghapus data lama
-                        table.rows.add(response.data); // Menambahkan data baru
-                        table.draw(); // Menarik ulang tabel untuk menampilkan data baru
-                    } else {
-                        alert(response.message); // Menampilkan pesan jika tidak ada data
-                    }
+                    // Hapus data lama dan masukkan data baru ke dalam DataTable
+                    var table = $("#dataTable-1").DataTable();
+                    table.clear(); // Menghapus data lama
+                    table.rows.add(response.data); // Menambahkan data baru
+                    table.draw(); // Menarik ulang tabel untuk menampilkan data baru
                 },
                 error: function (xhr, status, error) {
                     // Tangani jika terjadi error
@@ -50,7 +46,6 @@ $(document).ready(() => {
 loadDataReport = () => {
     $("#dataTable-1").DataTable({
         processing: true,
-        serverSide: false,
         destroy: true,
         searching: true,
         ajax: {
