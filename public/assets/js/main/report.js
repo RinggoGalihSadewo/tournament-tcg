@@ -19,19 +19,35 @@ $(document).ready(() => {
 
             // Kirimkan data ke backend dengan menggunakan AJAX
             $.ajax({
-                url: "/admin/report/get-data-report-filter/", // URL endpoint backend
+                url: "/admin/report/get-data-report-filter", // URL endpoint backend
                 type: "POST",
-                serverSide: true,
+                processing: true,
+                destroy: true,
+                searching: true,
+                stateSave: true,
                 data: {
                     _token: _token, // Pastikan _token ada untuk keamanan
                     id_tournament: selectedTournament, // Kirim id tournament yang dipilih
                 },
-                success: function (response) {
-                    // Hapus data lama dan masukkan data baru ke dalam DataTable
-                    var table = $("#dataTable-1").DataTable();
-                    table.clear(); // Menghapus data lama
-                    table.rows.add(response.data); // Menambahkan data baru
-                    table.draw(); // Menarik ulang tabel untuk menampilkan data baru
+                success: (res) => {
+                    switch (res.status) {
+                        case 200:
+                            // Hapus data lama dan masukkan data baru ke dalam DataTable
+                            var table = $("#dataTable-1").DataTable();
+                            table.clear(); // Menghapus data lama
+                            table.rows.add(res.data); // Menambahkan data baru
+                            table.draw(); // Menarik ulang tabel untuk menampilkan data baru
+                            break;
+                        case 401:
+                            Swal.fire({
+                                title: "Gagal!",
+                                text: res.message,
+                                icon: "error",
+                                showConfirmButton: false,
+                                timer: 2000,
+                            });
+                            break;
+                    }
                 },
                 error: function (xhr, status, error) {
                     // Tangani jika terjadi error
@@ -48,6 +64,7 @@ loadDataReport = () => {
         processing: true,
         destroy: true,
         searching: true,
+        stateSave: true,
         ajax: {
             url: "/admin/report/get-data-report",
             type: "POST",

@@ -80,74 +80,76 @@ $(document).ready(function () {
 });
 
 $(document.body).on("change", "#tournament", function () {
-    const id_tournament = $("#tournament").val();
+    if (window.location.pathname === "/admin/tournament-participants/pairing") {
+        const id_tournament = $("#tournament").val();
 
-    $.ajax({
-        url: "/admin/tournament-participants/pairing/get-participant-by-tournament",
-        type: "POST",
-        data: {
-            id_tournament,
-            _token,
-        },
-        success: (res) => {
-            switch (res.status) {
-                case 200:
-                    if (res.data && res.data.length > 0) {
-                        for (let i = 0; i < 4; i++) {
-                            let selectA = $("#participant-" + i + "-a");
-                            let selectB = $("#participant-" + i + "-b");
-                            let selectWinner = $("#winner-" + i);
+        $.ajax({
+            url: "/admin/tournament-participants/pairing/get-participant-by-tournament",
+            type: "POST",
+            data: {
+                id_tournament,
+                _token,
+            },
+            success: (res) => {
+                switch (res.status) {
+                    case 200:
+                        if (res.data && res.data.length > 0) {
+                            for (let i = 0; i < 4; i++) {
+                                let selectA = $("#participant-" + i + "-a");
+                                let selectB = $("#participant-" + i + "-b");
+                                let selectWinner = $("#winner-" + i);
 
-                            selectA.empty();
-                            selectB.empty();
-                            selectWinner.empty();
+                                selectA.empty();
+                                selectB.empty();
+                                selectWinner.empty();
 
-                            selectA.append(
-                                '<option disabled selected value="">--Choose Participant--</option>'
-                            );
-                            selectB.append(
-                                '<option disabled selected value="">--Choose Participant--</option>'
-                            );
-                            selectWinner.append(
-                                '<option disabled selected value="">--Choose Participant--</option>'
-                            );
-
-                            res.data.forEach((participant) => {
                                 selectA.append(
-                                    `<option value="${participant.name}">${participant.name}</option>`
+                                    '<option disabled selected value="">--Choose Participant--</option>'
                                 );
                                 selectB.append(
-                                    `<option value="${participant.name}">${participant.name}</option>`
+                                    '<option disabled selected value="">--Choose Participant--</option>'
                                 );
                                 selectWinner.append(
-                                    `<option value="${participant.name}">${participant.name}</option>`
+                                    '<option disabled selected value="">--Choose Participant--</option>'
                                 );
-                            });
-                        }
-                    }
-                    break;
-                case 401:
-                    Swal.fire({
-                        title: "Gagal!",
-                        text: res.message,
-                        icon: "error",
-                        showConfirmButton: false,
-                        timer: 2000,
-                    });
-                    break;
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            if (jqXHR.status == 422) {
-                var errors = jqXHR.responseJSON.errors;
 
-                $.each(errors, function (key, val) {
-                    $("#" + key).addClass("is-invalid");
-                    $("." + key).text(val[0]);
-                });
-            }
-        },
-    });
+                                res.data.forEach((participant) => {
+                                    selectA.append(
+                                        `<option value="${participant.name}">${participant.name}</option>`
+                                    );
+                                    selectB.append(
+                                        `<option value="${participant.name}">${participant.name}</option>`
+                                    );
+                                    selectWinner.append(
+                                        `<option value="${participant.name}">${participant.name}</option>`
+                                    );
+                                });
+                            }
+                        }
+                        break;
+                    case 401:
+                        Swal.fire({
+                            title: "Gagal!",
+                            text: res.message,
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 2000,
+                        });
+                        break;
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 422) {
+                    var errors = jqXHR.responseJSON.errors;
+
+                    $.each(errors, function (key, val) {
+                        $("#" + key).addClass("is-invalid");
+                        $("." + key).text(val[0]);
+                    });
+                }
+            },
+        });
+    }
 });
 
 // $(document).ready(function () {
